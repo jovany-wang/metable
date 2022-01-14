@@ -52,3 +52,4 @@ if(WIN32)
 endif()
 
 #METABLE_DEFINE_TEST(metable_server SRC_FILES src/server/server_main.cc LINKS gflags)
+METABLE_DEFINE_TEST(metable_server SRC_FILES src/server/server_main.cc)
