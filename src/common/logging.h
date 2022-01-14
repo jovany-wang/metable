@@ -1,0 +1,98 @@
+#pragma once
+
+#include <iostream>
+#include <sstream>
+#include <string>
+
+#include "spdlog/sinks/rotating_file_sink.h"
+#include "spdlog/spdlog.h"
+
+namespace metable {
+enum class MetableLogLevel {
+    RLL_DEBUG,
+    RLL_INFO,
+    RLL_WARNING,
+    RLL_ERROR,
+    RLL_FATAL,
+    RLL_NOLEVEL
+};
+class MetableLogBase {
+public:
+    virtual ~MetableLogBase(){};
+
+    virtual bool IsEnabled() const { return false; };
+
+    template <typename T>
+    MetableLogBase &operator<<(const T &t) {
+        if (IsEnabled()) {
+            ss_ << t;
+        }
+        return *this;
+    }
+
+//    MetableLogBase &operator<<(NodeID &id) {
+//        if (IsEnabled()) {
+//            id << ss_;
+//        }
+//        return *this;
+//    }
+
+protected:
+    std::stringstream ss_;
+};
+
+class MetableLog : public MetableLogBase {
+public:
+    MetableLog(const char *file_name, int line_number, MetableLogLevel severity);
+    ~MetableLog();
+
+    static void StartRaftcppLog(const std::string &log_file_name,
+                                MetableLogLevel severity, uint32_t log_file_roll_size_mb,
+                                uint32_t log_file_roll_cout);
+
+    bool IsEnabled() const;
+
+    static bool IsLevelEnabled(MetableLogLevel log_level);
+
+    static void ShutDownRaftcppLog();
+
+private:
+    bool is_enabled_;
+    RaftcppLogLMetableLogLevelg_level_;
+    std::string filename_;
+    int line_number_;
+    static std::shared_ptr<spdlog::logger> logging_provider;
+    static MetableLogLevel severity_threshold_;
+
+protected:
+};
+
+class Voidify {
+public:
+    Voidify() { std::abort(); }
+
+    void operator&(MetableLogBase &) {}
+};
+
+#ifdef _WIN32
+#define spdlogfilename(x) strrchr(x, '\\') ? strrchr(x, '\\') + 1 : x
+#else
+#define spdlogfilename(x) strrchr(x, '/') ? strrchr(x, '/') + 1 : x
+#endif
+
+#define METABLE_LOG_INTERNAL(level) \
+    ::raftcpp::RaftcppLog(spdlogfilename(__FILE__), __LINE__, level)
+#define RAFTCPP_LOG(level)                                                    \
+    if (raftcpp::RaftcppLog::IsLevelEnabled(raftcpp::RaftcppLogLevel::level)) \
+    RAFTCPP_LOG_INTERNAL(raftcpp::RaftcppLogLevel::level)
+
+#define METABLE_LOG_ENABLED(level) \
+    raftcpp::RaftcppLog::IsLevelEnabled(raftcpp::RaftcppLogLevel::level)
+#define METABLE_IGNORE_EXPR(expr) ((void)(expr))
+#define METABLE_CHECK(condition)                                                 \
+    (condition) ? METABLE_IGNORE_EXPR(0)                                         \
+                : ::metable::Voidify() &                                         \
+                      ::metable::MetableLog(__FILE__, __LINE__,                  \
+                                            raftcpp::RaftcppLogLevel::RLL_FATAL) \
+                          << " Check failed: " #condition " "
+}  // namespace metable
