@@ -32,13 +32,13 @@ INCLUDE_DIRECTORIES(
 		SYSTEM ${SPDLOG_INCLUDE_DIR}
 )
 
-## common library
-#ADD_LIBRARY(common_lib
+# common library
+ADD_LIBRARY(common_lib
 #		src/common/config.cc
 #		src/common/timer.cc
 #		src/common/file.cc
-#		src/common/logging.cc)
-#ADD_DEPENDENCIES(common_lib asio_ep spdlog_ep)
+		src/common/logging.cc)
+ADD_DEPENDENCIES(common_lib asio_ep spdlog_ep)
 
 # Test targets
 if(UNIX)
@@ -52,4 +52,17 @@ if(WIN32)
 endif()
 
 #METABLE_DEFINE_TEST(metable_server SRC_FILES src/server/server_main.cc LINKS gflags)
-METABLE_DEFINE_TEST(metable_server SRC_FILES src/server/server_main.cc)
+#METABLE_DEFINE_TEST(metable_server SRC_FILES src/server/server_main.cc LINKS common_lib)
+
+# Test targets
+if(UNIX)
+	set(link_libs pthread)
+else()
+	set(link_libs )
+endif()
+
+if(WIN32)
+	ADD_DEFINITIONS(-DWIN32_LEAN_AND_MEAN)
+endif()
+
+METABLE_DEFINE_TEST(test_logging SRC_FILES tests/logging_test.cc LINKS common_lib)
