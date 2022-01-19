@@ -40,7 +40,7 @@ TEST(LoggingTest, TestLogLevel) {
 // Here tests trivial things for the logging
 //TEST(LoggingTest, TestLogTrivial) {
 //    metable::NodeID node_id;
-//    RAFTCPP_LOG(RLL_DEBUG) << node_id;
+//    METABLE_LOG(RLL_DEBUG) << node_id;
 //}
 
 int main(int argc, char **argv) {
