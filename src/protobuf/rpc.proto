@@ -1,0 +1,17 @@
+syntax = "proto3";
+option cc_enable_arenas = true;
+
+package metable.rpc;
+
+service Metable {
+  rpc CheckVersion(CheckVersionRequest) returns (CheckVersionReply) {}
+}
+
+enum CheckVersionStatus {
+  OK = 0;
+  DISMATCHED = 1;
+}
+
+message CheckVersionRequest { string version_str = 1; }
+
+message CheckVersionReply { CheckVersionStatus status = 1; }

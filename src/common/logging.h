@@ -6,7 +6,6 @@
 #include <memory>
 
 #include "spdlog/sinks/rotating_file_sink.h"
-// #include "rotating_file_sink.h"
 #include "spdlog/spdlog.h"
 
 namespace metable {
