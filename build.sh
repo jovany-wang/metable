@@ -5,5 +5,3 @@ set -x
 set -e
 
 bazel build --jobs=4 //:all
-
-./bazel-bin/metable_server
