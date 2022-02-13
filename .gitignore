@@ -15,6 +15,13 @@ Cargo.lock
 /target
 cmake-build-debug/
 .idea
-build
+/build
 
+//bazel related
+bazel-bin
+bazel-metable
+bazel-out
+bazel-testlogs
 
+// logs
+log
