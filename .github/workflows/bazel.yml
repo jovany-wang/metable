@@ -33,5 +33,4 @@ jobs:
     - uses: actions/checkout@v2
     - name: build
       run: ./build.sh
-    - name: run test
-      run: cd build && ../run_all_tests.sh 
+
