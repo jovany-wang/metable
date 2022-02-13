@@ -1,0 +1,16 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "common_lib",
+    hdrs = glob(["src/common/*.h"]),
+    srcs = glob(["src/common/*.cc"]),
+    strip_include_prefix = "//src",
+    visibility = ["//visibility:public"],
+    deps = ["@com_github_spdlog//:spdlog"],
+)
+
+cc_binary(
+    name = "metable_server",
+    srcs = glob(["src/server/*.cc"]),
+    deps = [":common_lib"],
+)
