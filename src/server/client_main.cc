@@ -1,12 +1,11 @@
-#include <iostream>
-#include <fstream>
 #include "common/logging.h"
+#include <fstream>
+#include <iostream>
 
 #include "src/protobuf/hello.grpc.pb.h"
 
 #include "grpcpp/grpcpp.h"
 #include "grpcpp/health_check_service_interface.h"
-
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -15,23 +14,21 @@ using grpc::Status;
 
 using namespace metable::server;
 
-
-
-#include <grpcpp/grpcpp.h>
 #include "src/protobuf/hello.grpc.pb.h"
+#include <grpcpp/grpcpp.h>
 
 using grpc::Channel;
 using grpc::ClientContext;
 using grpc::Status;
 
 class HelloClient {
- public:
+public:
   HelloClient(std::shared_ptr<Channel> channel)
       : stub_(rpc::Greeter::NewStub(channel)) {}
 
   // Assembles the client's payload, sends it and presents the response back
   // from the server.
-  std::string SayHello(const std::string& user) {
+  std::string SayHello(const std::string &user) {
     // Data we are sending to the server.
     rpc::HelloRequest request;
     request.set_name(user);
@@ -56,11 +53,11 @@ class HelloClient {
     }
   }
 
- private:
+private:
   std::unique_ptr<rpc::Greeter::Stub> stub_;
 };
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
   // Instantiate the client. It requires a channel, out of which the actual RPCs
   // are created. This channel models a connection to an endpoint specified by
   // the argument "--target=" which is the only expected argument.
