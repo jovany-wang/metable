@@ -34,6 +34,18 @@ cc_library(
     ],
 )
 
+cc_library(
+    name = "metable_client_lib",
+    hdrs = glob(["src/server/*.h"]),
+    srcs = glob(["src/server/metable_client.cc",]),
+    strip_include_prefix = "//src",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":common_lib",
+        ":rpc_cc_grpc",
+        "@com_github_grpc_grpc//:grpc++",
+    ],
+)
 
 cc_binary(
     name = "metable_server",
@@ -52,6 +64,7 @@ cc_binary(
     name = "metable_client",
     srcs = glob(["src/server/client_main.cc"]),
     deps = [
+        ":metable_client_lib",
         ":common_lib",
         ":rpc_cc_grpc",
         "@com_github_grpc_grpc//:grpc++",
