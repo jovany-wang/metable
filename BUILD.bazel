@@ -21,10 +21,27 @@ cc_grpc_library(
     ],
 )
 
+cc_library(
+    name = "metable_server_lib",
+    hdrs = glob(["src/server/*.h"]),
+    srcs = glob(["src/server/metable_server.cc",]),
+    strip_include_prefix = "//src",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":common_lib",
+        ":rpc_cc_grpc",
+        "@com_github_grpc_grpc//:grpc++",
+    ],
+)
+
+
 cc_binary(
     name = "metable_server",
-    srcs = glob(["src/server/server_main.cc"]),
+    srcs = glob([
+        "src/server/server_main.cc",
+        ]),
     deps = [
+        ":metable_server_lib",
         ":common_lib",
         ":rpc_cc_grpc",
         "@com_github_grpc_grpc//:grpc++",
