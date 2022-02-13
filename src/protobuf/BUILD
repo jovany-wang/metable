@@ -5,13 +5,13 @@ load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_proto_library", "c
 load("@rules_proto_grpc//python:defs.bzl", "python_grpc_compile")
 
 proto_library(
-    name = "hello_proto",
-    srcs = ["hello.proto"],
+    name = "rpc_proto",
+    srcs = ["rpc.proto"],
     deps = [],
     visibility = ["//visibility:public"],
 )
 
 cc_proto_library(
-    name = "hello_cc_proto",
-    deps = [":hello_proto"],
+    name = "rpc_cc_proto",
+    deps = ["rpc_proto"],
 )

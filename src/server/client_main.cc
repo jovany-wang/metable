@@ -2,7 +2,8 @@
 #include <fstream>
 #include <iostream>
 
-#include "src/protobuf/hello.grpc.pb.h"
+#include "src/protobuf/rpc.grpc.pb.h"
+#include "src/common/constants.h"
 
 #include "grpcpp/grpcpp.h"
 #include "grpcpp/health_check_service_interface.h"
@@ -12,50 +13,52 @@ using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::Status;
 
-using namespace metable::server;
-
-#include "src/protobuf/hello.grpc.pb.h"
+#include "src/protobuf/rpc.grpc.pb.h"
 #include <grpcpp/grpcpp.h>
 
 using grpc::Channel;
 using grpc::ClientContext;
 using grpc::Status;
 
-class HelloClient {
+namespace metable {
+
+class MetableClient {
 public:
-  HelloClient(std::shared_ptr<Channel> channel)
-      : stub_(rpc::Greeter::NewStub(channel)) {}
+  MetableClient(std::shared_ptr<Channel> channel)
+      : stub_(metable::rpc::Metable::NewStub(channel)) {}
 
   // Assembles the client's payload, sends it and presents the response back
   // from the server.
-  std::string SayHello(const std::string &user) {
+  bool CheckVersion(const std::string &user) {
     // Data we are sending to the server.
-    rpc::HelloRequest request;
-    request.set_name(user);
+    rpc::CheckVersionRequest request;
+    request.set_version_str(VERSION_STR);
 
     // Container for the data we expect from the server.
-    rpc::HelloReply reply;
+    rpc::CheckVersionReply reply;
 
     // Context for the client. It could be used to convey extra information to
     // the server and/or tweak certain RPC behaviors.
     ClientContext context;
 
     // The actual RPC.
-    Status status = stub_->SayHello(&context, request, &reply);
+    Status status = stub_->CheckVersion(&context, request, &reply);
 
     // Act upon its status.
     if (status.ok()) {
-      return reply.message();
+      return reply.status() == rpc::CheckVersionStatus::OK;
     } else {
-      std::cout << status.error_code() << ": " << status.error_message()
-                << std::endl;
-      return "RPC failed";
+      std::cout << "Failed to RPC. status = " << status.error_message() << std::endl;
+      return false;
     }
   }
 
 private:
-  std::unique_ptr<rpc::Greeter::Stub> stub_;
+  std::unique_ptr<metable::rpc::Metable::Stub> stub_;
 };
+
+} // namespace metable
+
 
 int main(int argc, char **argv) {
   // Instantiate the client. It requires a channel, out of which the actual RPCs
@@ -82,13 +85,14 @@ int main(int argc, char **argv) {
       return 0;
     }
   } else {
-    target_str = "localhost:50051";
+    target_str = "localhost:10001";
   }
-  HelloClient greeter(
+
+  metable::MetableClient greeter(
       grpc::CreateChannel(target_str, grpc::InsecureChannelCredentials()));
   std::string user("qingwang");
-  std::string reply = greeter.SayHello(user);
-  std::cout << "Greeter received: " << reply << std::endl;
+  bool result = greeter.CheckVersion(user);
+  std::cout << "Version matched ==" << result << std::endl;
 
   return 0;
 }
