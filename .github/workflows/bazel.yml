@@ -1,0 +1,37 @@
+name: bazel-build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: cpplint
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: ./check-git-clang-format-output.sh
+
+  build-with-bazel:
+    timeout-minutes: 30
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: build
+      run: ./build.sh
+    - name: run test
+      run: cd build && ../run_all_tests.sh 
