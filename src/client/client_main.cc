@@ -4,7 +4,7 @@
 
 #include "src/protobuf/rpc.grpc.pb.h"
 #include "src/common/constants.h"
-#include "src/server/metable_client.h"
+#include "src/client/metable_client.h"
 
 int main(int argc, char **argv) {
   // Instantiate the client. It requires a channel, out of which the actual RPCs
