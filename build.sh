@@ -4,10 +4,6 @@ set -x
 # Cause the script to exit if a single command fails.
 set -e
 
-if [ -d "./build" ]; then
-    rm -rf build
-fi
-mkdir build
-cd build
-cmake ..
-make -j 4
+bazel build --jobs=4 //:all
+
+./bazel-bin/metable_server
