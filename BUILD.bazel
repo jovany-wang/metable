@@ -1,4 +1,6 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_proto_library", "cc_test")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 
 cc_library(
     name = "common_lib",
@@ -9,8 +11,32 @@ cc_library(
     deps = ["@com_github_spdlog//:spdlog"],
 )
 
+# hello gRPC lib.
+cc_grpc_library(
+    name = "hello_cc_grpc",
+    srcs = ["//src/protobuf:hello_proto"],            
+    grpc_only = True,
+    deps = [
+        "//src/protobuf:hello_cc_proto"
+    ],
+)
+
 cc_binary(
     name = "metable_server",
-    srcs = glob(["src/server/*.cc"]),
-    deps = [":common_lib"],
+    srcs = glob(["src/server/server_main.cc"]),
+    deps = [
+        ":common_lib",
+        ":hello_cc_grpc",
+        "@com_github_grpc_grpc//:grpc++",
+    ],
+)
+
+cc_binary(
+    name = "metable_client",
+    srcs = glob(["src/server/client_main.cc"]),
+    deps = [
+        ":common_lib",
+        ":hello_cc_grpc",
+        "@com_github_grpc_grpc//:grpc++",
+    ],
 )
