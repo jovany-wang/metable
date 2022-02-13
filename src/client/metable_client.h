@@ -33,6 +33,8 @@ public:
   // from the server.
   bool CheckVersion(const std::string &user);
 
+  bool CreateTable(const std::string &table_name, const TableSchema &table_schema);
+
 private:
   std::unique_ptr<metable::rpc::Metable::Stub> stub_;
 };

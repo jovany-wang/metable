@@ -26,4 +26,8 @@ namespace metable {
     }
   }
 
+  bool MetableClient::CreateTable(const std::string &table_name, const TableSchema &table_schema) {
+
+  }
+
 } // namespace metable

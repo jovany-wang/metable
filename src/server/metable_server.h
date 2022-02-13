@@ -25,6 +25,9 @@ public:
                                 const rpc::CheckVersionRequest *request,
                                 rpc::CheckVersionReply *reply) override;
 
+    virtual grpc::Status CreateTable(::grpc::ServerContext *context,
+                                const rpc::CreateTableRequest *request,
+                                rpc::CreateTableReply *reply) override;
 };
 
 /// The server of Metable.

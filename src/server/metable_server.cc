@@ -14,7 +14,13 @@ namespace metable {
     return grpc::Status::OK;
   }
 
-    void MetableServer::Loop() {
+    virtual grpc::Status MetableServiceImpl::CreateTable(::grpc::ServerContext *context,
+                                const rpc::CreateTableRequest *request,
+                                rpc::CreateTableReply *reply) override {
+
+    }
+
+  void MetableServer::Loop() {
         /// For grpc server
         std::string server_address("0.0.0.0:10001");
         metable::MetableServiceImpl service;

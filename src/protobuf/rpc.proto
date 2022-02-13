@@ -3,8 +3,30 @@ option cc_enable_arenas = true;
 
 package metable.rpc;
 
+message MetableField {
+  string field_name = 0;
+  int field_type = 1;
+  any field_value = 2;
+}
+
+message CreateTableRequest {
+  string table_name = 0;
+  MetableField[] all_fields = 1;
+}
+
+enum CreateTableStatus {
+  OK = 0;
+  UNKNOWN_ERROR = 10;
+}
+
+message CreateTableReply {
+  CreateTableStatus status = 1;
+}
+
+
 service Metable {
   rpc CheckVersion(CheckVersionRequest) returns (CheckVersionReply) {}
+  rpc CreateTable(CreateTableRequest) returns (CreateTableReply) {}
 }
 
 enum CheckVersionStatus {
@@ -15,3 +37,4 @@ enum CheckVersionStatus {
 message CheckVersionRequest { string version_str = 1; }
 
 message CheckVersionReply { CheckVersionStatus status = 1; }
+
