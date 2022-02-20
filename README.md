@@ -5,12 +5,12 @@ Note that this project is WIP.
 
 
 ## Features
-- Manage your meta data/cluster information with SQL-like language.
+- Managing your meta data/cluster information with SQL-like language.
 - The ability to subscribe the changing operations on a table.
 - State-based storage and delta notifications to let you keep a very consistant metadata.
 - P2P service registration and discovery to achieve a higher performance.
 - Highly performance for adhoc querying the metadata.
-- 
+
 
 ## Usage
 ```sql
