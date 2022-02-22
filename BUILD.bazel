@@ -12,6 +12,15 @@ cc_library(
     deps = ["@com_github_spdlog//:spdlog"],
 )
 
+cc_library(
+    name = "skiplist_lib",
+    # hdrs = glob(["src/common/*.h"]),
+    # srcs = glob(["src/common/*.cc"]),
+    strip_include_prefix = "//src",
+    visibility = ["//visibility:public"],
+    deps = ["@com_github_skiplist//:skiplist"],
+)
+
 # RPC gRPC lib.
 cc_grpc_library(
     name = "rpc_cc_grpc",
@@ -79,6 +88,17 @@ cc_test(
     tags = ["team:metable-core"],
     deps = [
         ":common_lib",
+        "@com_google_googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "skiplist_test",
+    srcs = ["tests/skiplist_test.cc"],
+    size = "small",
+    tags = ["team:metable-core"],
+    deps = [
+        ":skiplist_lib",
         "@com_google_googletest//:gtest_main",
     ],
 )

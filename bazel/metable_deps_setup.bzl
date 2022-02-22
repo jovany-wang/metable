@@ -30,10 +30,22 @@ def metable_deps_setup():
         sha256 = "2f6606151ec042e23396f07de9e7dcf6ca9a5db1d2b09f0cc93a7fc7f4008d1b",
         strip_prefix = "rules_proto_grpc-a74fef39c5fe636580083545f76d1eab74f6450d",
     )
+
     maybe(
         http_archive,
         name = "com_google_googletest",
         url = "https://github.com/google/googletest/archive/refs/tags/release-1.11.0.tar.gz",
         sha256 = "b4870bf121ff7795ba20d20bcdd8627b8e088f2d1dab299a031c1034eddc93d5",
         strip_prefix = "googletest-release-1.11.0",
+    )
+
+    maybe(
+        http_archive,
+        name = "com_github_skiplist",
+        sha256 = "6d1f85e21eea192490f9ebf58426a184b3ac5cb597b353e544bfc904b5d0855d",
+        urls = [
+            "https://github.com/greensky00/skiplist/archive/7f44208038857002b83223aeda0321f0f464da6e.tar.gz",
+        ],
+        strip_prefix = "skiplist-7f44208038857002b83223aeda0321f0f464da6e",
+        build_file = "@com_github_jovany_wang_metable//thirdparty:skiplist.BUILD",
     )
