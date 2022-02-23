@@ -49,3 +49,14 @@ def metable_deps_setup():
         strip_prefix = "skiplist-7f44208038857002b83223aeda0321f0f464da6e",
         build_file = "@com_github_jovany_wang_metable//thirdparty:skiplist.BUILD",
     )
+
+    maybe(
+        http_archive,
+        name = "asio",
+        sha256 = "4cd5cd0ad97e752a4075f02778732a3737b587f5eeefab59cd98dc43b0dcadb3",
+        urls = [
+            "https://shutian.oss-cn-hangzhou.aliyuncs.com/cdn/asio/asio-1.20.0.tar.gz",
+        ],
+        strip_prefix = "asio-1.20.0",
+        build_file = "@com_github_jovany_wang_metable//thirdparty:asio.BUILD",
+    )
