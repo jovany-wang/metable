@@ -26,4 +26,26 @@ namespace metable {
     }
   }
 
+
+  bool MetableClient::CreateTable(const std::string &table_name, 
+                                  const std::vector<std::pair<std::string, std::string>> &field){
+    rpc::CreateTableRequest request;
+    request.set_table_name(table_name);
+    rpc::Schema *scheme;
+    for(auto &item : field) {
+      scheme = request.add_fields();
+      scheme->set_type(item.first);
+      scheme->set_name(item.second);
+    }
+    rpc::CreateTableReply reply;
+    ClientContext context;
+    Status status = stub_->CreateTable(&context, request, &reply);
+    if (status.ok()) {
+      return reply.state() == rpc::OperationStatus::SUCCESS;
+    } else {
+      std::cout << "create table fail。" << std::endl;
+      return false;
+    }
+  }
+
 } // namespace metable

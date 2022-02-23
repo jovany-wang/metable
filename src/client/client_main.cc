@@ -40,5 +40,23 @@ int main(int argc, char **argv) {
   bool result = metable_client.CheckVersion(user);
   std::cout << "Version matched ==" << result << std::endl;
 
+  /*
+      When the versions match,
+      You can cancel the following comments about creating test tables.
+
+      if(result) {
+          std::cout << "Now creata test table(name='test_meta_table', field0(string, name)): " << std::endl;
+          std::string table_name("test_meta_table");
+          std::vector<std::pair<std::string, std::string>> vec;
+          vec.push_back(std::make_pair("string", "name"));
+          bool _result = metable_client.CreateTable(table_name, vec);
+          if(_result) {
+                std::cout << "create table success, the name is " << result << std::endl;
+          } else {
+                std::cout << "create table fail!" << std::endl;
+          }
+      }
+  */
+
   return 0;
 }
