@@ -5,6 +5,9 @@ package metable.rpc;
 
 service Metable {
   rpc CheckVersion(CheckVersionRequest) returns (CheckVersionReply) {}
+
+  rpc CreateTable(CreateTableRequest) returns (CreateTableReply) {}
+
 }
 
 enum CheckVersionStatus {
@@ -15,3 +18,23 @@ enum CheckVersionStatus {
 message CheckVersionRequest { string version_str = 1; }
 
 message CheckVersionReply { CheckVersionStatus status = 1; }
+
+// Operation result of each atomic action
+enum OperationStatus {
+  SUCCESS = 0;
+  FAIL = 1;
+}
+
+message CreateTableRequest {
+  string table_name = 1;
+  repeated Schema fields = 2;
+}
+
+message Schema {
+  string type = 1;
+  string name = 2;
+}
+
+message CreateTableReply {
+  OperationStatus state = 1;
+}
