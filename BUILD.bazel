@@ -103,3 +103,15 @@ cc_test(
         "@com_google_googletest//:gtest_main",
     ],
 )
+
+cc_test(
+    name = "rpc_test",
+    srcs = ["tests/rpc_test.cc"],
+    size = "small",
+    tags = ["team:metable-core"],
+    deps = [
+        ":metable_server_lib",
+        ":metable_client_lib",
+        "@com_google_googletest//:gtest_main",
+    ],
+)
