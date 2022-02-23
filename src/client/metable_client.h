@@ -3,6 +3,8 @@
 #include "common/logging.h"
 #include <fstream>
 #include <iostream>
+#include <map>
+#include <vector>
 
 #include "src/protobuf/rpc.grpc.pb.h"
 #include "src/common/constants.h"
@@ -32,6 +34,11 @@ public:
   // Assembles the client's payload, sends it and presents the response back
   // from the server.
   bool CheckVersion(const std::string &user);
+
+  // creta table info
+  // first param : what's name for the table you want
+  // second param : the fields of table
+  bool CreateTable(const std::string &table_name, const std::vector<std::pair<std::string, std::string>> &field);
 
 private:
   std::unique_ptr<metable::rpc::Metable::Stub> stub_;

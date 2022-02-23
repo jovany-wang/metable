@@ -14,6 +14,21 @@ namespace metable {
     return grpc::Status::OK;
   }
 
+  grpc::Status MetableServiceImpl::CreateTable(::grpc::ServerContext *context,
+                                const rpc::CreateTableRequest *request,
+                                rpc::CreateTableReply *reply) {
+                  auto _item = request->fields_size();
+                  std::vector<std::pair<std::string, std::string>> vec;
+                  for(int i = 0; i < _item; i++) {
+                      rpc::Schema schema = request->fields(i);
+                      vec.push_back(std::make_pair(schema.type(), schema.name()));
+                  }
+                  MetableServer ms;
+                  ms.add_table_info(request->table_name(), vec);
+                  reply->set_state(rpc::OperationStatus::SUCCESS);
+                  return grpc::Status::OK;
+               }
+
     void MetableServer::Loop() {
         /// For grpc server
         std::string server_address("0.0.0.0:10001");
