@@ -13,9 +13,9 @@ cc_library(
 )
 
 cc_library(
-    name = "skiplist_lib",
-    # hdrs = glob(["src/common/*.h"]),
-    # srcs = glob(["src/common/*.cc"]),
+    name = "skiplist_map_lib",
+    hdrs = glob(["src/skiplist/*.h"]),
+    srcs = glob(["src/skiplist/*.cc"]),
     strip_include_prefix = "//src",
     visibility = ["//visibility:public"],
     deps = ["@com_github_skiplist//:skiplist"],
@@ -94,12 +94,12 @@ cc_test(
 )
 
 cc_test(
-    name = "skiplist_test",
+    name = "skiplist_map_test",
     srcs = ["tests/skiplist_test.cc"],
     size = "small",
     tags = ["team:metable-core"],
     deps = [
-        ":skiplist_lib",
+        ":skiplist_map_lib",
         "@com_google_googletest//:gtest_main",
     ],
 )
