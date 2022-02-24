@@ -68,7 +68,7 @@ bool GreenSkySkiplistMap<KeyType, ValueType>::Remove(const KeyType &key) {
 template <typename KeyType, typename ValueType>
 bool GreenSkySkiplistMap<KeyType, ValueType>::Contains(const KeyType &key) {
   auto it = data_.find(key);
-  return it == data_.end();
+  return it != data_.end();
 }
 
 } // namespace metable
