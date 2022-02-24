@@ -1,8 +1,9 @@
 #include "include/sl_map.h"
+#include "skiplist_map/greensky_skiplist_map.h"
 
 #include "gtest/gtest.h"
 
-TEST(SkiplistTest, TestBasic) {
+TEST(SkiplistTest, TestGreenSkySKiplist) {
   sl_map_gc<int, int> slist;
 
   //   << Insertion >>
@@ -32,6 +33,18 @@ TEST(SkiplistTest, TestBasic) {
     auto it = slist.find(1);
     ASSERT_TRUE(it == slist.end());
   }
+}
+
+TEST(SkiplistTest, TestGreenSkySKiplistMap) {
+  using namespace metable;
+  std::unique_ptr<SkiplistMap<int, int>> map =
+      std::make_unique<GreenSkySkiplistMap<int, int>>();
+  ASSERT_TRUE(map->Put(1, 10));
+  ASSERT_FALSE(map->Put(1, 20));
+
+  int value;
+  ASSERT_TRUE(map->Get(1, &value));
+  ASSERT_EQ(10, value);
 }
 
 int main(int argc, char **argv) {
