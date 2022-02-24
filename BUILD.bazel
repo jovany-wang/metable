@@ -14,8 +14,8 @@ cc_library(
 
 cc_library(
     name = "skiplist_map_lib",
-    hdrs = glob(["src/skiplist/*.h"]),
-    srcs = glob(["src/skiplist/*.cc"]),
+    hdrs = glob(["src/skiplist_map/*.h"]),
+    srcs = glob(["src/skiplist_map/*.cc"]),
     strip_include_prefix = "//src",
     visibility = ["//visibility:public"],
     deps = ["@com_github_skiplist//:skiplist"],

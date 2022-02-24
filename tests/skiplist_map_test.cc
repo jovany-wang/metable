@@ -1,5 +1,5 @@
 #include "include/sl_map.h"
-#include "skiplist/greensky_skiplist_map.h"
+#include "skiplist_map/greensky_skiplist_map.h"
 
 #include "gtest/gtest.h"
 
