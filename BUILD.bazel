@@ -95,7 +95,7 @@ cc_test(
 
 cc_test(
     name = "skiplist_map_test",
-    srcs = ["tests/skiplist_test.cc"],
+    srcs = ["tests/skiplist_map_test.cc"],
     size = "small",
     tags = ["team:metable-core"],
     deps = [
