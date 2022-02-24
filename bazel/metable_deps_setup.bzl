@@ -12,7 +12,7 @@ def metable_deps_setup():
             "https://github.com/gabime/spdlog/archive/v1.8.0.tar.gz",
         ],
         strip_prefix = "spdlog-1.8.0",
-        build_file = "@com_github_jovany_wang_metable//thirdparty:spdlog.BUILD",
+        build_file = "@com_github_jovany_wang_metable//bazel/thirdparty:spdlog.BUILD",
     )
 
     maybe(
@@ -47,7 +47,7 @@ def metable_deps_setup():
             "https://github.com/greensky00/skiplist/archive/7f44208038857002b83223aeda0321f0f464da6e.tar.gz",
         ],
         strip_prefix = "skiplist-7f44208038857002b83223aeda0321f0f464da6e",
-        build_file = "@com_github_jovany_wang_metable//thirdparty:skiplist.BUILD",
+        build_file = "@com_github_jovany_wang_metable//bazel/thirdparty:skiplist.BUILD",
     )
 
     maybe(
@@ -58,5 +58,5 @@ def metable_deps_setup():
             "https://shutian.oss-cn-hangzhou.aliyuncs.com/cdn/asio/asio-1.20.0.tar.gz",
         ],
         strip_prefix = "asio-1.20.0",
-        build_file = "@com_github_jovany_wang_metable//thirdparty:asio.BUILD",
+        build_file = "@com_github_jovany_wang_metable//bazel/thirdparty:asio.BUILD",
     )
