@@ -6,6 +6,16 @@ load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 def metable_deps_setup():
     maybe(
         http_archive,
+        name = "platforms",
+        urls = [
+            "https://mirror.bazel.build/github.com/bazelbuild/platforms/releases/download/0.0.4/platforms-0.0.4.tar.gz",
+            "https://github.com/bazelbuild/platforms/releases/download/0.0.4/platforms-0.0.4.tar.gz",
+        ],
+        sha256 = "079945598e4b6cc075846f7fd6a9d0857c33a7afc0de868c2ccb96405225135d",
+    )
+
+    maybe(
+        http_archive,
         name = "com_github_spdlog",
         sha256 = "1e68e9b40cf63bb022a4b18cdc1c9d88eb5d97e4fd64fa981950a9cacf57a4bf",
         urls = [
