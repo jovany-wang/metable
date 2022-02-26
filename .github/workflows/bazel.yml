@@ -23,7 +23,7 @@ jobs:
       run: ./check-git-clang-format-output.sh
 
   build-with-bazel:
-    timeout-minutes: 30
+    timeout-minutes: 60
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -31,6 +31,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: build
+    - name: BUILD
       run: ./build.sh
-
+    - name: TEST
+      run:  bazel test //:all --jobs=4

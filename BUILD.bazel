@@ -2,6 +2,7 @@ load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_proto_library", "c
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 
+
 cc_library(
     name = "common_lib",
     hdrs = glob(["src/common/*.h"]),
@@ -9,6 +10,15 @@ cc_library(
     strip_include_prefix = "//src",
     visibility = ["//visibility:public"],
     deps = ["@com_github_spdlog//:spdlog"],
+)
+
+cc_library(
+    name = "skiplist_map_lib",
+    hdrs = glob(["src/skiplist_map/*.h"]),
+    srcs = glob(["src/skiplist_map/*.cc"]),
+    strip_include_prefix = "//src",
+    visibility = ["//visibility:public"],
+    deps = ["@com_github_skiplist//:skiplist"],
 )
 
 # RPC gRPC lib.
@@ -31,6 +41,7 @@ cc_library(
         ":common_lib",
         ":rpc_cc_grpc",
         "@com_github_grpc_grpc//:grpc++",
+        "@asio//:asio",
     ],
 )
 
@@ -68,5 +79,39 @@ cc_binary(
         ":common_lib",
         ":rpc_cc_grpc",
         "@com_github_grpc_grpc//:grpc++",
+    ],
+)
+
+cc_test(
+    name = "logging_test",
+    srcs = ["tests/logging_test.cc"],
+    size = "small",
+    tags = ["team:metable-core"],
+    deps = [
+        ":common_lib",
+        "@com_google_googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "skiplist_map_test",
+    srcs = ["tests/skiplist_map_test.cc"],
+    size = "small",
+    tags = ["team:metable-core"],
+    deps = [
+        ":skiplist_map_lib",
+        "@com_google_googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "rpc_test",
+    srcs = ["tests/rpc_test.cc"],
+    size = "small",
+    tags = ["team:metable-core"],
+    deps = [
+        ":metable_server_lib",
+        ":metable_client_lib",
+        "@com_google_googletest//:gtest_main",
     ],
 )

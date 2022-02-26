@@ -1,6 +1,8 @@
-# Metable
+# Metable ![](https://github.com/jovany-wang/metable/workflows/bazel-build/badge.svg)
+
 A distributed table-like metadata service for managing your large scale cluster with highly performance.  
 Note that this project is WIP.
+
 
 ## Features
 - Managing your meta data/cluster information with SQL-like language.
