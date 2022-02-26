@@ -53,9 +53,6 @@ bool GreenSkySkiplistMap<KeyType, ValueType>::Contains(const KeyType &key) {
 // That is, it is not enough to just #include "greensky_skiplist_map.h", which only tells the compiler how to allocate object data and how to build calls to member functions, not how to build member functions.
 // At the same time, the compiler will not complain. It will assume that these functions are provided elsewhere and let the linker find them.
 // Therefore, when you need a link, you will get "unresolved references" to any class member function that is not defined as inline in the class definition.
-/*
-参考：https://zhuanlan.zhihu.com/p/147623943
-*/
 void TemporaryFunction (){
   GreenSkySkiplistMap<int,int> TempObj;
 }
