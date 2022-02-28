@@ -30,7 +30,7 @@ void MetableServer::Loop() {
   // clients. In this case it corresponds to an *synchronous* service.
   builder.RegisterService(&service);
   // Finally assemble the server.
-  grpc_server_ = std::move(std::unique_ptr<Server>(builder.BuildAndStart()));
+  grpc_server_ = std::move(builder.BuildAndStart());
   std::cout << "Server listening on " << server_address << std::endl;
 
   // Wait for the server to shutdown. Note that some other thread must be
