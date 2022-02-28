@@ -51,6 +51,14 @@ def metable_deps_setup():
 
     maybe(
         http_archive,
+        name = "com_github_gflags_gflags",
+        url = "https://github.com/gflags/gflags/archive/refs/tags/v2.2.2.tar.gz",
+        sha256 = "34af2f15cf7367513b352bdcd2493ab14ce43692d2dcd9dfc499492966c64dcf",
+        strip_prefix = "gflags-2.2.2",
+    )
+
+    maybe(
+        http_archive,
         name = "com_github_skiplist",
         sha256 = "6d1f85e21eea192490f9ebf58426a184b3ac5cb597b353e544bfc904b5d0855d",
         urls = [
