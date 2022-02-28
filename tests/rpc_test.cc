@@ -28,7 +28,6 @@ TEST(RpcTest, TestCreateTable) {
     fields.push_back(std::make_pair("name", metable::rpc::FieldType::STRING));
     fields.push_back(std::make_pair("age", metable::rpc::FieldType::INT));
     auto result = metable_client.CreateTable(table_name, fields);
-    std::cout << "result status:" << result.first << ", result msg:" << result.second << std::endl;
     ASSERT_TRUE(result.first);
     metable_server.Stop();
     server_thread.join();
