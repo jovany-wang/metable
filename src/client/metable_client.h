@@ -4,8 +4,8 @@
 #include <fstream>
 #include <iostream>
 
-#include "src/protobuf/rpc.grpc.pb.h"
 #include "src/common/constants.h"
+#include "src/protobuf/rpc.grpc.pb.h"
 
 #include "grpcpp/grpcpp.h"
 #include "grpcpp/health_check_service_interface.h"

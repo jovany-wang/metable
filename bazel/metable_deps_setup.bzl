@@ -49,10 +49,12 @@ def metable_deps_setup():
         strip_prefix = "googletest-release-1.11.0",
     )
 
-    git_repository(
+    maybe(
+        http_archive,
         name = "com_github_gflags_gflags",
-        commit = "e171aa2d15ed9eb17054558e0b3a6a413bb01067",
-        remote = "https://github.com/gflags/gflags.git",
+        url = "https://github.com/gflags/gflags/archive/refs/tags/v2.2.2.tar.gz",
+        sha256 = "34af2f15cf7367513b352bdcd2493ab14ce43692d2dcd9dfc499492966c64dcf",
+        strip_prefix = "gflags-2.2.2",
     )
 
     maybe(
