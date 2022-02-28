@@ -3,7 +3,6 @@
 #include "common/logging.h"
 #include <fstream>
 #include <iostream>
-#include <map>
 #include <vector>
 
 #include "src/protobuf/rpc.grpc.pb.h"
@@ -35,10 +34,15 @@ public:
   // from the server.
   bool CheckVersion(const std::string &user);
 
-  // creta table info
-  // first param : what's name for the table you want
-  // second param : the fields of table
-  bool CreateTable(const std::string &table_name, const std::vector<std::pair<std::string, std::string>> &field);
+  // CreataTable RPC. 
+  // Use the table name and field list to create the meta information of a table.
+  // Returns a pair type result. First represents the operation status and 
+  // second represents the description of the result.
+  // Warning !!!
+  // The field name in the vector should not be repeated. 
+  // You should carefully check it before calling this method.
+  std::pair<bool, std::string> CreateTable(const std::string &name,
+										   const std::vector<std::pair<std::string, rpc::FieldType>> &fields);
 
 private:
   std::unique_ptr<metable::rpc::Metable::Stub> stub_;

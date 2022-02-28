@@ -26,26 +26,25 @@ namespace metable {
     }
   }
 
-
-  bool MetableClient::CreateTable(const std::string &table_name, 
-                                  const std::vector<std::pair<std::string, std::string>> &field){
+  std::pair<bool, std::string> MetableClient::CreateTable(const std::string &name,
+                                  const std::vector<std::pair<std::string, rpc::FieldType>> &fields){
     rpc::CreateTableRequest request;
-    request.set_table_name(table_name);
-    rpc::Schema *scheme;
-    for(auto &item : field) {
-      scheme = request.add_fields();
-      scheme->set_type(item.first);
-      scheme->set_name(item.second);
+    rpc::TableSchema schema;
+    schema.set_table_name(name);
+    rpc::Field* field;
+    for(const auto &field_item : fields) {
+      field = schema.add_fields();
+      field->set_name(field_item.first);
+      field->set_type(field_item.second);
     }
+    request.set_allocated_table_schema(&schema);
     rpc::CreateTableReply reply;
     ClientContext context;
     Status status = stub_->CreateTable(&context, request, &reply);
-    if (status.ok()) {
-      return reply.state() == rpc::OperationStatus::SUCCESS;
-    } else {
-      std::cout << "create table fail。" << std::endl;
-      return false;
+    if(status.ok()) {
+      return std::make_pair(reply.status() == rpc::CreateTableStatus::SUCCESS, reply.msg());
     }
+    return std::make_pair(false, "An error occurred on the server.");
   }
 
 } // namespace metable

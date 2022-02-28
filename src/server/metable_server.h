@@ -3,11 +3,10 @@
 #include "common/logging.h"
 #include <fstream>
 #include <iostream>
-#include <map>
-#include <vector>
-
-#include "src/protobuf/rpc.grpc.pb.h"
+#include <memory>
+#include <unordered_map>
 #include "src/common/constants.h"
+#include "src/protobuf/rpc.grpc.pb.h"
 
 #include "grpcpp/grpcpp.h"
 #include "grpcpp/health_check_service_interface.h"
@@ -24,55 +23,29 @@ class MetableServiceImpl : public rpc::Metable::Service {
 
 public:
   virtual grpc::Status CheckVersion(::grpc::ServerContext *context,
-                                const rpc::CheckVersionRequest *request,
-                                rpc::CheckVersionReply *reply) override;
+                                    const rpc::CheckVersionRequest *request,
+                                    rpc::CheckVersionReply *reply) override;
 
   virtual grpc::Status CreateTable(::grpc::ServerContext *context,
-                                const rpc::CreateTableRequest *request,
-                                rpc::CreateTableReply *reply) override;
+                                    const rpc::CreateTableRequest *request,
+                                    rpc::CreateTableReply *reply) override;
 
+private:
+	   // Store meta information of all tables¡£
+       std::unordered_map<std::string, rpc::TableSchema> all_tables;
 };
 
 /// The server of Metable.
 class MetableServer final {
 
-private:
-
-    // Stores descriptions of all tables
-    std::map<std::string, 
-            std::vector<std::pair<std::string, std::string>>> table_info;
-
 public:
-    void Loop();
+  void Loop();
 
-    /*
-        append table schema to global table schema
-    */
-    void add_table_info(const std::string &name, 
-                        const std::vector<std::pair<std::string, std::string>> &vec) {
-        table_info.insert(std::make_pair(name, vec));
-    }
+  /// Gracefully stop this metable server.
+  void Stop();
 
-    /*
-        return table info
-    */
-    std::map<std::string, 
-            std::vector<std::pair<std::string, std::string>>> getTableInfo() {
-        return table_info;
-    }
-
-    /*
-        print table infoã€‚
-    */
-    void printTableInfo(){
-        for (auto &item : table_info) {
-            std::cout << item.first << std::endl;
-            for (auto &_item : item.second) {
-                std::cout << _item.first << ", " << _item.second << std::endl;
-            }
-        }
-    };
-
+private:
+  std::unique_ptr<Server> grpc_server_ = nullptr;
 };
 
 } // namespace metable
