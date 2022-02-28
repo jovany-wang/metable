@@ -3,6 +3,7 @@
 #include "common/logging.h"
 #include <fstream>
 #include <iostream>
+#include <vector>
 
 #include "src/protobuf/rpc.grpc.pb.h"
 #include "src/common/constants.h"
@@ -32,6 +33,16 @@ public:
   // Assembles the client's payload, sends it and presents the response back
   // from the server.
   bool CheckVersion(const std::string &user);
+
+  // CreataTable RPC. 
+  // Use the table name and field list to create the meta information of a table.
+  // Returns a pair type result. First represents the operation status and 
+  // second represents the description of the result.
+  // Warning !!!
+  // The field name in the vector should not be repeated. 
+  // You should carefully check it before calling this method.
+  std::pair<bool, std::string> CreateTable(const std::string &name,
+										   const std::vector<std::pair<std::string, rpc::FieldType>> &fields);
 
 private:
   std::unique_ptr<metable::rpc::Metable::Stub> stub_;
