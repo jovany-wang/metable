@@ -42,9 +42,29 @@ TEST(SkiplistTest, TestGreenSkySKiplistMap) {
   ASSERT_TRUE(map->Put(1, 10));
   ASSERT_FALSE(map->Put(1, 20));
 
-  int value;
-  ASSERT_TRUE(map->Get(1, &value));
-  ASSERT_EQ(10, value);
+  {
+    int value = 0;
+    ASSERT_TRUE(map->Get(1, &value));
+    ASSERT_EQ(10, value);
+  }
+  {
+    int value = 0;
+    ASSERT_FALSE(map->Get(2, &value));
+    ASSERT_EQ(0, value);
+  }
+
+  {
+    /// Contains
+    ASSERT_TRUE(map->Contains(1));
+    ASSERT_FALSE(map->Contains(3));
+  }
+
+  {
+    /// Remove
+    ASSERT_TRUE(map->Remove(1));
+    ASSERT_FALSE(map->Remove(3));
+    ASSERT_FALSE(map->Contains(1));
+  }
 }
 
 int main(int argc, char **argv) {

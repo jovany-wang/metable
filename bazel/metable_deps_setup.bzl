@@ -6,13 +6,23 @@ load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 def metable_deps_setup():
     maybe(
         http_archive,
+        name = "platforms",
+        urls = [
+            "https://mirror.bazel.build/github.com/bazelbuild/platforms/releases/download/0.0.4/platforms-0.0.4.tar.gz",
+            "https://github.com/bazelbuild/platforms/releases/download/0.0.4/platforms-0.0.4.tar.gz",
+        ],
+        sha256 = "079945598e4b6cc075846f7fd6a9d0857c33a7afc0de868c2ccb96405225135d",
+    )
+
+    maybe(
+        http_archive,
         name = "com_github_spdlog",
         sha256 = "1e68e9b40cf63bb022a4b18cdc1c9d88eb5d97e4fd64fa981950a9cacf57a4bf",
         urls = [
             "https://github.com/gabime/spdlog/archive/v1.8.0.tar.gz",
         ],
         strip_prefix = "spdlog-1.8.0",
-        build_file = "@com_github_jovany_wang_metable//thirdparty:spdlog.BUILD",
+        build_file = "@com_github_jovany_wang_metable//bazel/thirdparty:spdlog.BUILD",
     )
 
     maybe(
@@ -47,7 +57,7 @@ def metable_deps_setup():
             "https://github.com/greensky00/skiplist/archive/7f44208038857002b83223aeda0321f0f464da6e.tar.gz",
         ],
         strip_prefix = "skiplist-7f44208038857002b83223aeda0321f0f464da6e",
-        build_file = "@com_github_jovany_wang_metable//thirdparty:skiplist.BUILD",
+        build_file = "@com_github_jovany_wang_metable//bazel/thirdparty:skiplist.BUILD",
     )
 
     maybe(
@@ -58,5 +68,5 @@ def metable_deps_setup():
             "https://shutian.oss-cn-hangzhou.aliyuncs.com/cdn/asio/asio-1.20.0.tar.gz",
         ],
         strip_prefix = "asio-1.20.0",
-        build_file = "@com_github_jovany_wang_metable//thirdparty:asio.BUILD",
+        build_file = "@com_github_jovany_wang_metable//bazel/thirdparty:asio.BUILD",
     )
