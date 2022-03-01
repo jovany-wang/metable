@@ -32,7 +32,6 @@ MetableServiceImpl::CreateTable(::grpc::ServerContext *context,
   return grpc::Status::OK;
 }
 
-
 void MetableServer::Loop() {
   /// For grpc server
   std::string server_address("0.0.0.0:10001");

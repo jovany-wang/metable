@@ -26,16 +26,13 @@ public:
                                     const rpc::CheckVersionRequest *request,
                                     rpc::CheckVersionReply *reply) override;
 
-                                    
   virtual grpc::Status CreateTable(::grpc::ServerContext *context,
                                    const rpc::CreateTableRequest *request,
                                    rpc::CreateTableReply *reply) override;
 
 private:
-
   // Store meta information of all tables。
   std::unordered_map<std::string, rpc::TableSchema> all_tables;
-  
 };
 
 /// The server of Metable.
