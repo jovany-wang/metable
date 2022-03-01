@@ -15,3 +15,7 @@ enum CheckVersionStatus {
 message CheckVersionRequest { string version_str = 1; }
 
 message CheckVersionReply { CheckVersionStatus status = 1; }
+
+message RPC{
+}
+
