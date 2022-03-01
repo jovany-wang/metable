@@ -15,6 +15,24 @@ MetableServiceImpl::CheckVersion(::grpc::ServerContext *context,
   return grpc::Status::OK;
 }
 
+grpc::Status
+MetableServiceImpl::CreateTable(::grpc::ServerContext *context,
+                                const rpc::CreateTableRequest *request,
+                                rpc::CreateTableReply *reply) {
+  const rpc::TableSchema &table_schema = request->table_schema();
+  const std::string &table_name = table_schema.table_name();
+  auto result = all_tables.insert(std::make_pair(table_name, table_schema));
+  if (result.second) { // Insert success.
+    reply->set_msg("Create table success.");
+    reply->set_status(rpc::CreateTableStatus::SUCCESS);
+  } else { // Insert fail.
+    reply->set_msg("Table already exists.");
+    reply->set_status(rpc::CreateTableStatus::FAIL);
+  }
+  return grpc::Status::OK;
+}
+
+
 void MetableServer::Loop() {
   /// For grpc server
   std::string server_address("0.0.0.0:10001");
