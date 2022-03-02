@@ -28,33 +28,31 @@ enum CreateTableStatus {
 }
 
 enum FieldType {
-    // value type
-    INT = 0;
-    BIGINT = 1;
-    FLOAT = 2;
-    DOUBLE = 3;
-    // string type
-    STRING = 4;
-    // datatime type  
-    TIMESTAMP = 5;
-    DATE = 6;
-    TIME = 7;
-    DATATIME = 8;
+  // value type
+  INT = 0;
+  BIGINT = 1;
+  FLOAT = 2;
+  DOUBLE = 3;
+  // string type
+  STRING = 4;
+  // datatime type  
+  TIMESTAMP = 5;
+  DATE = 6;
+  TIME = 7;
+  DATATIME = 8;
 }
 
 message Field {
-    string name = 1;
-    FieldType type = 2;
+  string name = 1;
+  FieldType type = 2;
 }
 
 message TableSchema {
-    string table_name = 1;
-    repeated Field fields = 2;
+  string table_name = 1;
+  repeated Field fields = 2;
 }
 
-message CreateTableRequest {
-  TableSchema table_schema = 1;
-}
+message CreateTableRequest { TableSchema table_schema = 1; }
 
 message CreateTableReply {
   string msg = 1;
