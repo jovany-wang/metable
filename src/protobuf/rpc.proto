@@ -35,7 +35,7 @@ enum FieldType {
   DOUBLE = 3;
   // string type
   STRING = 4;
-  // datatime type  
+  // datatime type
   TIMESTAMP = 5;
   DATE = 6;
   TIME = 7;
