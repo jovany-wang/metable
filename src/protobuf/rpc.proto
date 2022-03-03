@@ -58,4 +58,3 @@ message CreateTableReply {
   string msg = 1;
   CreateTableStatus status = 2;
 }
-
