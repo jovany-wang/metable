@@ -31,7 +31,7 @@ public:
                                    rpc::CreateTableReply *reply) override;
 
 private:
-  // All tables in memeory.
+  // All tables in memeory！
   std::unordered_map<std::string, std::vector<rpc::Field>> all_tables;
 };
 

@@ -42,6 +42,7 @@ enum FieldType {
   DATATIME = 8;
 }
 
+// Each field type in the table
 message Field {
   string name = 1;
   FieldType type = 2;

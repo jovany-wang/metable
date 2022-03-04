@@ -27,10 +27,10 @@ MetableServiceImpl::CreateTable(::grpc::ServerContext *context,
   }
   auto result = all_tables.insert(std::make_pair(table_name, fields));
   if (result.second) { // Insert success.
-    reply->set_msg("Create table success.");
+    reply->set_msg("Create table success...");
     reply->set_status(rpc::CreateTableStatus::SUCCESS);
   } else { // Insert fail.
-    reply->set_msg("Table already exists.");
+    reply->set_msg("Table already exists...");
     reply->set_status(rpc::CreateTableStatus::FAIL);
   }
   return grpc::Status::OK;

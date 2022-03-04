@@ -33,7 +33,7 @@ public:
   // from the server.
   bool CheckVersion(const std::string &user);
 
-  // Create a table on the Metable server.
+  // Create a table on the Metable server!
   // Use the table name and field list to create the meta information of a
   // table. Returns a pair type result. First represents the operation status
   // and second represents the description of the result. Warning !!! The field

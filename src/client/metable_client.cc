@@ -32,6 +32,7 @@ std::pair<bool, std::string> MetableClient::CreateTable(
     const std::vector<std::pair<std::string, rpc::FieldType>> &fields) {
   rpc::CreateTableRequest request;
   request.set_table_name(name);
+  // Add field to fields.
   rpc::Field *field;
   for (const auto &field_item : fields) {
     field = request.add_fields();
