@@ -1,10 +1,10 @@
 #pragma once
 
+#include "common/logging.h"
 #include <fstream>
 #include <iostream>
 #include <memory>
-#include <vector>
-#include "common/logging.h"
+
 #include "src/common/constants.h"
 #include "src/protobuf/rpc.grpc.pb.h"
 

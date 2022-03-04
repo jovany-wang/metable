@@ -23,37 +23,37 @@ message CheckVersionReply { CheckVersionStatus status = 1; }
 /// Define the information required for CreateTable !!!
 
 enum CreateTableStatus {
-  SUCCESS = 0;
-  FAIL = 1;
+    SUCCESS = 0;
+    FAIL = 1;
 }
 
 enum FieldType {
-  // value type
-  INT = 0;
-  BIGINT = 1;
-  FLOAT = 2;
-  DOUBLE = 3;
-  // string type
-  STRING = 4;
-  // datatime type
-  TIMESTAMP = 5;
-  DATE = 6;
-  TIME = 7;
-  DATATIME = 8;
+    // value type
+    INT = 0;
+    BIGINT = 1;
+    FLOAT = 2;
+    DOUBLE = 3;
+    // string type
+    STRING = 4;
+    // datatime type
+    TIMESTAMP = 5;
+    DATE = 6;
+    TIME = 7;
+    DATATIME = 8;
 }
 
 // Each field type in the table
 message Field {
-  string name = 1;
-  FieldType type = 2;
+   string name = 1;
+   FieldType type = 2;
 }
 
 message CreateTableRequest { 
-  string table_name = 1;
-  repeated Field fields = 2;
+   string table_name = 1;
+   repeated Field fields = 2;
 }
 
 message CreateTableReply {
-  CreateTableStatus status = 1;
-  string msg = 2;
+    CreateTableStatus status = 1;
+    string msg = 2;
 }
