@@ -19,9 +19,13 @@ grpc::Status
 MetableServiceImpl::CreateTable(::grpc::ServerContext *context,
                                 const rpc::CreateTableRequest *request,
                                 rpc::CreateTableReply *reply) {
-  const rpc::TableSchema &table_schema = request->table_schema();
-  const std::string &table_name = table_schema.table_name();
-  auto result = all_tables.insert(std::make_pair(table_name, table_schema));
+  const std::string &table_name = request->table_name();
+  std::vector<rpc::Field> fields;
+  long size = request->fields_size();
+  for (long i = 0; i < size; i++) {
+    fields.emplace_back(request->fields(i));
+  }
+  auto result = all_tables.insert(std::make_pair(table_name, fields));
   if (result.second) { // Insert success.
     reply->set_msg("Create table success.");
     reply->set_status(rpc::CreateTableStatus::SUCCESS);

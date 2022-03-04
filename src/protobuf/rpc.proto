@@ -47,15 +47,12 @@ message Field {
   FieldType type = 2;
 }
 
-message TableSchema {
+message CreateTableRequest { 
   string table_name = 1;
   repeated Field fields = 2;
 }
 
-message CreateTableRequest { TableSchema table_schema = 1; }
-
 message CreateTableReply {
-  string msg = 1;
-  CreateTableStatus status = 2;
+  CreateTableStatus status = 1;
+  string msg = 2;
 }
-

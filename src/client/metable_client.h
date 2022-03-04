@@ -1,11 +1,11 @@
 #pragma once
 
 #include "common/logging.h"
-#include <fstream>
-#include <iostream>
-
 #include "src/common/constants.h"
 #include "src/protobuf/rpc.grpc.pb.h"
+#include <fstream>
+#include <iostream>
+#include <vector>
 
 #include "grpcpp/grpcpp.h"
 #include "grpcpp/health_check_service_interface.h"
@@ -33,7 +33,7 @@ public:
   // from the server.
   bool CheckVersion(const std::string &user);
 
-  // CreataTable RPC.
+  // Create a table on the Metable server.
   // Use the table name and field list to create the meta information of a
   // table. Returns a pair type result. First represents the operation status
   // and second represents the description of the result. Warning !!! The field
