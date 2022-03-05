@@ -1,7 +1,7 @@
-#include "common/logging.h"
 #include <fstream>
 #include <iostream>
 
+#include "common/logging.h"
 #include "metable_server.h"
 
 using namespace metable;
