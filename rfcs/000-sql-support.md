@@ -19,11 +19,15 @@ action will keep sending data to server until closing the client.
 ```
 create database <database_name>;
 drop database <database_name>;
+show databases;
+use <database_name>;
+
 create table <table_name> (
     <column_name> <column_type> <column_option>
     (,<column_name> <column_type> <column_option>)*,
     primary key <column_name> (,<column_name >)*
 ) <table_option>;
+show tables;
 drop table <table_name>;
 alter table <old_table_name> rename [to] <new_table_name>;
 alter table <table_name> add column <column_name> <column_type> <column_option>;
