@@ -30,6 +30,37 @@ alter table <table_name> add column <column_name> <column_type> <column_option>;
 alter table <table_name> drop column <column_name>;
 ```
 
+**supported column option so far:**
+
++ comment <column_description>
++ not null
++ default <column_value>
+
+**supported table option so far:**
+
++ comment <table_description>
+
+**supported column type:**
+
++ bool
++ short
++ int
++ long
++ float
++ double
++ decimal
++ string
++ date
++ datetime
+
+**supported condition**
+
++ `>`, `<`, `=`, `<=`, `>=`, `!=`
++ `in`
++ `like`, `not like`
++ `between ... and ...`
++ `is null` and `= null`
+
 **2) DML **
 
 ```
@@ -59,16 +90,16 @@ allow user to set environment variables to controller how to print data, send da
 **2) How to set environment variables**
 some example here.
 
-```sql
-> set print_format=csv;
-> set select_action=subscribe;
+```
+set print_format=csv;
+set select_action=subscribe;
 ```
 
 ## client library
 
 here provide the basic design for client executing sql statement.
 
-```
+```c++
 client.Sql(<select_sql_statement>).query();
 client.Sql(<select_sql_statement>).subscribe(<handle>)
 client.Sql(<insert_sql_statement>).execute();
