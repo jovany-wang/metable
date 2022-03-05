@@ -48,7 +48,7 @@ message Field {
     FieldType type = 2;
 }
 
-message CreateTableRequest { 
+message CreateTableRequest {
     string table_name = 1;
     repeated Field fields = 2;
 }

@@ -2,13 +2,12 @@
 
 #include <fstream>
 #include <iostream>
+
 #include "common/logging.h"
-
-#include "src/common/constants.h"
-#include "src/protobuf/rpc.grpc.pb.h"
-
 #include "grpcpp/grpcpp.h"
 #include "grpcpp/health_check_service_interface.h"
+#include "src/common/constants.h"
+#include "src/protobuf/rpc.grpc.pb.h"
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -16,6 +15,7 @@ using grpc::ServerContext;
 using grpc::Status;
 
 #include <grpcpp/grpcpp.h>
+
 #include "src/protobuf/rpc.grpc.pb.h"
 
 using grpc::Channel;
