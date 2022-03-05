@@ -1,6 +1,6 @@
-#include "common/logging.h"
 #include <fstream>
 #include <iostream>
+#include "common/logging.h"
 
 #include "src/client/metable_client.h"
 #include "src/common/constants.h"
