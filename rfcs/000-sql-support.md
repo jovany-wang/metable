@@ -49,7 +49,7 @@ delete from <table_name> where <condition> (and/or <condition>)*
 
 select (*|<column_name>) (, *|<column_name>)* from <table_name> where <condition> (and|or <condition>)*
 
-update <table_name> set <column_name> = <column_value> (,<column_name> = <column_value>)* where <condition> (and/or <condition>)*
+update <table_name> set <column_name> = <column_value> (,<column_name> = <column_value>)* where <condition> (and|or <condition>)*
 ```
 
 **supported column option so far:**
