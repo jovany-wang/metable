@@ -1,7 +1,6 @@
+#include "gtest/gtest.h"
 #include "include/sl_map.h"
 #include "skiplist_map/greensky_skiplist_map.h"
-
-#include "gtest/gtest.h"
 
 TEST(SkiplistTest, TestGreenSkySKiplist) {
     sl_map_gc<int, int> slist;

@@ -27,7 +27,7 @@ public:
     virtual grpc::Status CreateTable(::grpc::ServerContext *context,
                                      const rpc::CreateTableRequest *request,
                                      rpc::CreateTableReply *reply) override;
-    
+
     virtual grpc::Status IsExistTable(::grpc::ServerContext *context,
                                       const rpc::IsExistTableRequest *request,
                                       rpc::IsExistTableReply *reply) override;

@@ -38,11 +38,11 @@ grpc::Status MetableServiceImpl::IsExistTable(::grpc::ServerContext *context,
                                               const rpc::IsExistTableRequest *request,
                                               rpc::IsExistTableReply *reply) {
     const std::string &table_name = request->table_name();
-    if (all_tables.find(table_name) == all_tables.end()){
+    if (all_tables.find(table_name) == all_tables.end()) {
         // table_name is not exist.
         reply->set_msg("This table is not exists.");
         reply->set_status(rpc::IsExistTableStatus::TABLE_NOT_EXIST);
-    }else {
+    } else {
         // table_name exist
         reply->set_msg("This table is exists.");
         reply->set_status(rpc::IsExistTableStatus::TABLE_EXIST);
@@ -55,11 +55,11 @@ grpc::Status MetableServiceImpl::DeleteTable(::grpc::ServerContext *context,
                                              rpc::DeleteTableReply *reply) {
     const std::string &table_name = request->table_name();
     auto IteratorTemp = all_tables.find(table_name);
-    if (IteratorTemp == all_tables.end()){
+    if (IteratorTemp == all_tables.end()) {
         // table_name is not exist, should not need to be deleted.
         reply->set_msg("This table is not exists, do nothing.");
         reply->set_status(rpc::DeleteTableStatus::DELETE_TABLE_FAIL);
-    }else {
+    } else {
         // table_name exist, should be deleted.
         all_tables.erase(IteratorTemp);
         reply->set_msg("This table delete success");

@@ -69,7 +69,9 @@ enum IsExistTableStatus {
     TABLE_NOT_EXIST = 1;
 }
 
-message IsExistTableRequest { string table_name = 1; }
+message IsExistTableRequest {
+    string table_name = 1;
+}
 
 message IsExistTableReply {
     IsExistTableStatus status = 1;
@@ -83,7 +85,9 @@ enum DeleteTableStatus {
     DELETE_TABLE_FAIL = 1;
 }
 
-message DeleteTableRequest { string table_name = 1; }
+message DeleteTableRequest {
+    string table_name = 1;
+}
 
 message DeleteTableReply {
     DeleteTableStatus status = 1;

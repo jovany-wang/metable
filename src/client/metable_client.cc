@@ -68,8 +68,8 @@ std::pair<bool, std::string> MetableClient::DeleteTable(const std::string &name)
     ClientContext context;
     Status status = stub_->DeleteTable(&context, request, &reply);
     if (status.ok()) {
-        return std::make_pair(reply.status() == rpc::DeleteTableStatus::DELETE_TABLE_SUCCESS,
-                              reply.msg());
+        return std::make_pair(
+            reply.status() == rpc::DeleteTableStatus::DELETE_TABLE_SUCCESS, reply.msg());
     }
     return std::make_pair(false, "An error occurred on the server.");
 }

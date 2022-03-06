@@ -1,7 +1,6 @@
 #include "client/metable_client.h"
-#include "server/metable_server.h"
-
 #include "gtest/gtest.h"
+#include "server/metable_server.h"
 
 TEST(RpcTest, TestCheckVersion) {
     metable::MetableServer metable_server;
@@ -47,8 +46,8 @@ TEST(RpcTest, TestIsExistTable) {
     auto result = metable_client.CreateTable(table_name, fields);
     ASSERT_TRUE(result.first);
 
-   auto IsExistTableResult = metable_client.IsExistTable(table_name);
-   ASSERT_TRUE(IsExistTableResult.first);
+    auto IsExistTableResult = metable_client.IsExistTable(table_name);
+    ASSERT_TRUE(IsExistTableResult.first);
 
     metable_server.Stop();
     server_thread.join();
@@ -68,9 +67,9 @@ TEST(RpcTest, TestDeleteTable) {
     auto result = metable_client.CreateTable(table_name, fields);
     ASSERT_TRUE(result.first);
 
-   auto DeleteTableResult = metable_client.DeleteTable(table_name);
-   ASSERT_TRUE(DeleteTableResult.first);
-   
+    auto DeleteTableResult = metable_client.DeleteTable(table_name);
+    ASSERT_TRUE(DeleteTableResult.first);
+
     metable_server.Stop();
     server_thread.join();
 }
