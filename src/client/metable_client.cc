@@ -48,4 +48,30 @@ std::pair<bool, std::string> MetableClient::CreateTable(
     return std::make_pair(false, "An error occurred on the server.");
 }
 
+std::pair<bool, std::string> MetableClient::IsExistTable(const std::string &name) {
+    rpc::IsExistTableRequest request;
+    request.set_table_name(name);
+    rpc::IsExistTableReply reply;
+    ClientContext context;
+    Status status = stub_->IsExistTable(&context, request, &reply);
+    if (status.ok()) {
+        return std::make_pair(reply.status() == rpc::IsExistTableStatus::TABLE_EXIST,
+                              reply.msg());
+    }
+    return std::make_pair(false, "An error occurred on the server.");
+}
+
+std::pair<bool, std::string> MetableClient::DeleteTable(const std::string &name) {
+    rpc::DeleteTableRequest request;
+    request.set_table_name(name);
+    rpc::DeleteTableReply reply;
+    ClientContext context;
+    Status status = stub_->DeleteTable(&context, request, &reply);
+    if (status.ok()) {
+        return std::make_pair(reply.status() == rpc::DeleteTableStatus::DELETE_TABLE_SUCCESS,
+                              reply.msg());
+    }
+    return std::make_pair(false, "An error occurred on the server.");
+}
+
 }  // namespace metable

@@ -7,6 +7,10 @@ service Metable {
   rpc CheckVersion(CheckVersionRequest) returns (CheckVersionReply) {}
 
   rpc CreateTable(CreateTableRequest) returns (CreateTableReply) {}
+
+  rpc IsExistTable(IsExistTableRequest) returns (IsExistTableReply) {}
+
+  rpc DeleteTable(DeleteTableRequest) returns (DeleteTableReply) {}
 }
 
 /// Define the information required for CheckVersion !!!
@@ -55,5 +59,33 @@ message CreateTableRequest {
 
 message CreateTableReply {
     CreateTableStatus status = 1;
+    string msg = 2;
+}
+
+/// Define the information required for IsExistTable !!!
+
+enum IsExistTableStatus {
+    TABLE_EXIST = 0;
+    TABLE_NOT_EXIST = 1;
+}
+
+message IsExistTableRequest { string table_name = 1; }
+
+message IsExistTableReply {
+    IsExistTableStatus status = 1;
+    string msg = 2;
+}
+
+/// Define the information required for DeleteTable !!!
+
+enum DeleteTableStatus {
+    DELETE_TABLE_SUCCESS = 0;
+    DELETE_TABLE_FAIL = 1;
+}
+
+message DeleteTableRequest { string table_name = 1; }
+
+message DeleteTableReply {
+    DeleteTableStatus status = 1;
     string msg = 2;
 }
