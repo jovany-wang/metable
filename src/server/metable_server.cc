@@ -35,8 +35,8 @@ grpc::Status MetableServiceImpl::CreateTable(::grpc::ServerContext *context,
 }
 
 grpc::Status MetableServiceImpl::TableExist(::grpc::ServerContext *context,
-                                              const rpc::TableExistRequest *request,
-                                              rpc::TableExistReply *reply) {
+                                            const rpc::TableExistRequest *request,
+                                            rpc::TableExistReply *reply) {
     const std::string &table_name = request->table_name();
     if (all_tables.find(table_name) == all_tables.end()) {
         // table_name is not exist.
@@ -51,8 +51,8 @@ grpc::Status MetableServiceImpl::TableExist(::grpc::ServerContext *context,
 }
 
 grpc::Status MetableServiceImpl::DropTable(::grpc::ServerContext *context,
-                                             const rpc::DropTableRequest *request,
-                                             rpc::DropTableReply *reply) {
+                                           const rpc::DropTableRequest *request,
+                                           rpc::DropTableReply *reply) {
     const std::string &table_name = request->table_name();
     auto it = all_tables.find(table_name);
     if (it == all_tables.end()) {

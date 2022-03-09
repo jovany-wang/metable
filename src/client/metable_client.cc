@@ -68,8 +68,8 @@ std::pair<bool, std::string> MetableClient::DropTable(const std::string &name) {
     ClientContext context;
     Status status = stub_->DropTable(&context, request, &reply);
     if (status.ok()) {
-        return std::make_pair(
-            reply.status() == rpc::DropTableStatus::DROP_TABLE_SUCCESS, reply.msg());
+        return std::make_pair(reply.status() == rpc::DropTableStatus::DROP_TABLE_SUCCESS,
+                              reply.msg());
     }
     return std::make_pair(false, "An error occurred on the server.");
 }
