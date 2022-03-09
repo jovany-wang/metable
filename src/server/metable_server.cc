@@ -34,36 +34,36 @@ grpc::Status MetableServiceImpl::CreateTable(::grpc::ServerContext *context,
     return grpc::Status::OK;
 }
 
-grpc::Status MetableServiceImpl::IsExistTable(::grpc::ServerContext *context,
-                                              const rpc::IsExistTableRequest *request,
-                                              rpc::IsExistTableReply *reply) {
+grpc::Status MetableServiceImpl::TableExist(::grpc::ServerContext *context,
+                                              const rpc::TableExistRequest *request,
+                                              rpc::TableExistReply *reply) {
     const std::string &table_name = request->table_name();
     if (all_tables.find(table_name) == all_tables.end()) {
         // table_name is not exist.
         reply->set_msg("This table is not exists.");
-        reply->set_status(rpc::IsExistTableStatus::TABLE_NOT_EXIST);
+        reply->set_status(rpc::TableExistStatus::TABLE_NOT_EXIST);
     } else {
         // table_name exist
         reply->set_msg("This table is exists.");
-        reply->set_status(rpc::IsExistTableStatus::TABLE_EXIST);
+        reply->set_status(rpc::TableExistStatus::TABLE_EXIST);
     }
     return grpc::Status::OK;
 }
 
-grpc::Status MetableServiceImpl::DeleteTable(::grpc::ServerContext *context,
-                                             const rpc::DeleteTableRequest *request,
-                                             rpc::DeleteTableReply *reply) {
+grpc::Status MetableServiceImpl::DropTable(::grpc::ServerContext *context,
+                                             const rpc::DropTableRequest *request,
+                                             rpc::DropTableReply *reply) {
     const std::string &table_name = request->table_name();
-    auto IteratorTemp = all_tables.find(table_name);
-    if (IteratorTemp == all_tables.end()) {
+    auto it = all_tables.find(table_name);
+    if (it == all_tables.end()) {
         // table_name is not exist, should not need to be deleted.
         reply->set_msg("This table is not exists, do nothing.");
-        reply->set_status(rpc::DeleteTableStatus::DELETE_TABLE_FAIL);
+        reply->set_status(rpc::DropTableStatus::DROP_TABLE_FAIL);
     } else {
         // table_name exist, should be deleted.
-        all_tables.erase(IteratorTemp);
+        all_tables.erase(it);
         reply->set_msg("This table delete success");
-        reply->set_status(rpc::DeleteTableStatus::DELETE_TABLE_SUCCESS);
+        reply->set_status(rpc::DropTableStatus::DROP_TABLE_SUCCESS);
     }
     return grpc::Status::OK;
 }

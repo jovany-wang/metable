@@ -8,9 +8,9 @@ service Metable {
 
   rpc CreateTable(CreateTableRequest) returns (CreateTableReply) {}
 
-  rpc IsExistTable(IsExistTableRequest) returns (IsExistTableReply) {}
+  rpc TableExist(TableExistRequest) returns (TableExistReply) {}
 
-  rpc DeleteTable(DeleteTableRequest) returns (DeleteTableReply) {}
+  rpc DropTable(DropTableRequest) returns (DropTableReply) {}
 }
 
 /// Define the information required for CheckVersion !!!
@@ -62,34 +62,34 @@ message CreateTableReply {
     string msg = 2;
 }
 
-/// Define the information required for IsExistTable !!!
+/// Define the information required for TableExist !!!
 
-enum IsExistTableStatus {
+enum TableExistStatus {
     TABLE_EXIST = 0;
     TABLE_NOT_EXIST = 1;
 }
 
-message IsExistTableRequest {
+message TableExistRequest {
     string table_name = 1;
 }
 
-message IsExistTableReply {
-    IsExistTableStatus status = 1;
+message TableExistReply {
+    TableExistStatus status = 1;
     string msg = 2;
 }
 
-/// Define the information required for DeleteTable !!!
+/// Define the information required for DropTable !!!
 
-enum DeleteTableStatus {
-    DELETE_TABLE_SUCCESS = 0;
-    DELETE_TABLE_FAIL = 1;
+enum DropTableStatus {
+    DROP_TABLE_SUCCESS = 0;
+    DROP_TABLE_FAIL = 1;
 }
 
-message DeleteTableRequest {
+message DropTableRequest {
     string table_name = 1;
 }
 
-message DeleteTableReply {
-    DeleteTableStatus status = 1;
+message DropTableReply {
+    DropTableStatus status = 1;
     string msg = 2;
 }

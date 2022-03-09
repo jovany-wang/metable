@@ -28,13 +28,13 @@ public:
                                      const rpc::CreateTableRequest *request,
                                      rpc::CreateTableReply *reply) override;
 
-    virtual grpc::Status IsExistTable(::grpc::ServerContext *context,
-                                      const rpc::IsExistTableRequest *request,
-                                      rpc::IsExistTableReply *reply) override;
+    virtual grpc::Status TableExist(::grpc::ServerContext *context,
+                                      const rpc::TableExistRequest *request,
+                                      rpc::TableExistReply *reply) override;
 
-    virtual grpc::Status DeleteTable(::grpc::ServerContext *context,
-                                     const rpc::DeleteTableRequest *request,
-                                     rpc::DeleteTableReply *reply) override;
+    virtual grpc::Status DropTable(::grpc::ServerContext *context,
+                                     const rpc::DropTableRequest *request,
+                                     rpc::DropTableReply *reply) override;
 
 private:
     // All tables in memeory！

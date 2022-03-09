@@ -48,28 +48,28 @@ std::pair<bool, std::string> MetableClient::CreateTable(
     return std::make_pair(false, "An error occurred on the server.");
 }
 
-std::pair<bool, std::string> MetableClient::IsExistTable(const std::string &name) {
-    rpc::IsExistTableRequest request;
+std::pair<bool, std::string> MetableClient::TableExist(const std::string &name) {
+    rpc::TableExistRequest request;
     request.set_table_name(name);
-    rpc::IsExistTableReply reply;
+    rpc::TableExistReply reply;
     ClientContext context;
-    Status status = stub_->IsExistTable(&context, request, &reply);
+    Status status = stub_->TableExist(&context, request, &reply);
     if (status.ok()) {
-        return std::make_pair(reply.status() == rpc::IsExistTableStatus::TABLE_EXIST,
+        return std::make_pair(reply.status() == rpc::TableExistStatus::TABLE_EXIST,
                               reply.msg());
     }
     return std::make_pair(false, "An error occurred on the server.");
 }
 
-std::pair<bool, std::string> MetableClient::DeleteTable(const std::string &name) {
-    rpc::DeleteTableRequest request;
+std::pair<bool, std::string> MetableClient::DropTable(const std::string &name) {
+    rpc::DropTableRequest request;
     request.set_table_name(name);
-    rpc::DeleteTableReply reply;
+    rpc::DropTableReply reply;
     ClientContext context;
-    Status status = stub_->DeleteTable(&context, request, &reply);
+    Status status = stub_->DropTable(&context, request, &reply);
     if (status.ok()) {
         return std::make_pair(
-            reply.status() == rpc::DeleteTableStatus::DELETE_TABLE_SUCCESS, reply.msg());
+            reply.status() == rpc::DropTableStatus::DROP_TABLE_SUCCESS, reply.msg());
     }
     return std::make_pair(false, "An error occurred on the server.");
 }

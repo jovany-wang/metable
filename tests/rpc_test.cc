@@ -32,7 +32,7 @@ TEST(RpcTest, TestCreateTable) {
     server_thread.join();
 }
 
-TEST(RpcTest, TestIsExistTable) {
+TEST(RpcTest, TestTableExist) {
     metable::MetableServer metable_server;
     std::thread server_thread([&metable_server]() { metable_server.Loop(); });
 
@@ -40,20 +40,15 @@ TEST(RpcTest, TestIsExistTable) {
         grpc::CreateChannel("localhost:10001", grpc::InsecureChannelCredentials()));
 
     std::string table_name = "test_table";
-    // std::vector<std::pair<std::string, metable::rpc::FieldType>> fields;
-    // fields.push_back(std::make_pair("name", metable::rpc::FieldType::STRING));
-    // fields.push_back(std::make_pair("age", metable::rpc::FieldType::INT));
-    // auto result = metable_client.CreateTable(table_name, fields);
-    // ASSERT_TRUE(result.first);
 
-    auto IsExistTableResult = metable_client.IsExistTable(table_name);
-    ASSERT_FALSE(IsExistTableResult.first);
+    auto TableExistResult = metable_client.TableExist(table_name);
+    ASSERT_FALSE(TableExistResult.first);
 
     metable_server.Stop();
     server_thread.join();
 }
 
-TEST(RpcTest, TestDeleteTable) {
+TEST(RpcTest, TestDropTable) {
     metable::MetableServer metable_server;
     std::thread server_thread([&metable_server]() { metable_server.Loop(); });
 
@@ -61,14 +56,9 @@ TEST(RpcTest, TestDeleteTable) {
         grpc::CreateChannel("localhost:10001", grpc::InsecureChannelCredentials()));
 
     std::string table_name = "test_table";
-    // std::vector<std::pair<std::string, metable::rpc::FieldType>> fields;
-    // fields.push_back(std::make_pair("name", metable::rpc::FieldType::STRING));
-    // fields.push_back(std::make_pair("age", metable::rpc::FieldType::INT));
-    // auto result = metable_client.CreateTable(table_name, fields);
-    // ASSERT_TRUE(result.first);
 
-    auto DeleteTableResult = metable_client.DeleteTable(table_name);
-    ASSERT_FALSE(DeleteTableResult.first);
+    auto DropTableResult = metable_client.DropTable(table_name);
+    ASSERT_FALSE(DropTableResult.first);
 
     metable_server.Stop();
     server_thread.join();
