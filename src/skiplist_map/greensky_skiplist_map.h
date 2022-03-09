@@ -1,7 +1,6 @@
 #pragma once
 
 #include "include/sl_map.h"
-
 #include "skiplist_map.h"
 
 namespace metable {

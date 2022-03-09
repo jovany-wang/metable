@@ -28,6 +28,14 @@ public:
                                      const rpc::CreateTableRequest *request,
                                      rpc::CreateTableReply *reply) override;
 
+    virtual grpc::Status TableExist(::grpc::ServerContext *context,
+                                    const rpc::TableExistRequest *request,
+                                    rpc::TableExistReply *reply) override;
+
+    virtual grpc::Status DropTable(::grpc::ServerContext *context,
+                                   const rpc::DropTableRequest *request,
+                                   rpc::DropTableReply *reply) override;
+
 private:
     // All tables in memeory！
     std::unordered_map<std::string, std::vector<rpc::Field>> all_tables;

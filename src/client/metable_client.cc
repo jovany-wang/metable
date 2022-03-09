@@ -48,4 +48,30 @@ std::pair<bool, std::string> MetableClient::CreateTable(
     return std::make_pair(false, "An error occurred on the server.");
 }
 
+std::pair<bool, std::string> MetableClient::TableExist(const std::string &name) {
+    rpc::TableExistRequest request;
+    request.set_table_name(name);
+    rpc::TableExistReply reply;
+    ClientContext context;
+    Status status = stub_->TableExist(&context, request, &reply);
+    if (status.ok()) {
+        return std::make_pair(reply.status() == rpc::TableExistStatus::TABLE_EXIST,
+                              reply.msg());
+    }
+    return std::make_pair(false, "An error occurred on the server.");
+}
+
+std::pair<bool, std::string> MetableClient::DropTable(const std::string &name) {
+    rpc::DropTableRequest request;
+    request.set_table_name(name);
+    rpc::DropTableReply reply;
+    ClientContext context;
+    Status status = stub_->DropTable(&context, request, &reply);
+    if (status.ok()) {
+        return std::make_pair(reply.status() == rpc::DropTableStatus::DROP_TABLE_SUCCESS,
+                              reply.msg());
+    }
+    return std::make_pair(false, "An error occurred on the server.");
+}
+
 }  // namespace metable

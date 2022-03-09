@@ -34,6 +34,40 @@ grpc::Status MetableServiceImpl::CreateTable(::grpc::ServerContext *context,
     return grpc::Status::OK;
 }
 
+grpc::Status MetableServiceImpl::TableExist(::grpc::ServerContext *context,
+                                            const rpc::TableExistRequest *request,
+                                            rpc::TableExistReply *reply) {
+    const std::string &table_name = request->table_name();
+    if (all_tables.find(table_name) == all_tables.end()) {
+        // table_name is not exist.
+        reply->set_msg("This table is not exists.");
+        reply->set_status(rpc::TableExistStatus::TABLE_NOT_EXIST);
+    } else {
+        // table_name exist
+        reply->set_msg("This table is exists.");
+        reply->set_status(rpc::TableExistStatus::TABLE_EXIST);
+    }
+    return grpc::Status::OK;
+}
+
+grpc::Status MetableServiceImpl::DropTable(::grpc::ServerContext *context,
+                                           const rpc::DropTableRequest *request,
+                                           rpc::DropTableReply *reply) {
+    const std::string &table_name = request->table_name();
+    auto it = all_tables.find(table_name);
+    if (it == all_tables.end()) {
+        // table_name is not exist, should not need to be deleted.
+        reply->set_msg("This table is not exists, do nothing.");
+        reply->set_status(rpc::DropTableStatus::DROP_TABLE_FAIL);
+    } else {
+        // table_name exist, should be deleted.
+        all_tables.erase(it);
+        reply->set_msg("This table delete success");
+        reply->set_status(rpc::DropTableStatus::DROP_TABLE_SUCCESS);
+    }
+    return grpc::Status::OK;
+}
+
 void MetableServer::Loop() {
     /// For grpc server
     std::string server_address("0.0.0.0:10001");

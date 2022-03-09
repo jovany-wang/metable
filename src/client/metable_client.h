@@ -43,6 +43,10 @@ public:
         const std::string &name,
         const std::vector<std::pair<std::string, rpc::FieldType>> &fields);
 
+    std::pair<bool, std::string> TableExist(const std::string &name);
+
+    std::pair<bool, std::string> DropTable(const std::string &name);
+
 private:
     std::unique_ptr<metable::rpc::Metable::Stub> stub_;
 };

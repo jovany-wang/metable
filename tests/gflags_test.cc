@@ -1,6 +1,6 @@
-#include <iostream>
-
 #include "gflags/gflags.h"
+
+#include <iostream>
 
 #include "gtest/gtest.h"
 
