@@ -11,10 +11,9 @@ meijies
 ## Background
 
 The sql is the most used way to interact with table storage system. Metable needs to support it for user accessing data
-by command line tool, web page and client. Furthermore, we will also introduce 2 extra actions, `subscribe`and `publish`
-. `subscribe` action use select statement to represent what data do you want and keep fetching snapshot data and
-increment data until unsubscribe it, while `query` action only fetch snapshot data at the moment. `publish` action will
-keep sending data to server until closing the client.
+by command line tool, web page and client. Furthermore, we will also introduce extra action, `subscribe`.
+. `subscribe` keep fetching snapshot data and increment data until unsubscribe it, while `query` action only fetch
+snapshot data at the moment.
 
 ## SQL
 
@@ -45,11 +44,13 @@ alter table <table_name> drop column <column_name>;
 insert into <table_name> (<column_name> (, <column_name>)*)
 values (<column_value> (, <column_value>)*);
 
-delete from <table_name> where <condition> (and/or <condition>)*
+delete from <table_name> where <condition> (and/or <condition>)*;
 
-select (*|<column_name>) (, *|<column_name>)* from <table_name> where <condition> (and|or <condition>)*
+select (*|<column_name>) (,<column_name>)* from <table_name> where <condition> (and|or <condition>)*;
 
-update <table_name> set <column_name> = <column_value> (,<column_name> = <column_value>)* where <condition> (and|or <condition>)*
+update <table_name> set <column_name> = <column_value> (,<column_name> = <column_value>)* where <condition> (and|or <condition>)*;
+
+sub (*|<column_name>) (,<column_name>)* from  <table_name> where <condition> (and|or <condition>)*;
 ```
 
 **supported column option so far:**
@@ -93,8 +94,6 @@ allows user setting environment variables to control how to print data, send dat
 | env variable  | description                                                               |
 |---------------|---------------------------------------------------------------------------|
 | print_format  | the format to print selected data, default is table, also support csv     |
-| select_action | the way to fetch selected data, default is query, also support subscribe  |
-| insert_action | the way to send data to metable, default is execute, also support publish |
 
 **2) How to set environment variables**
 some example here.
@@ -103,10 +102,3 @@ some example here.
 set print_format=csv;
 set select_action=subscribe;
 ```
-
-## `Subscribe` and `Publish`
-
-Although supporting `subscribe` and `publish` actions is possible by expanding sql statement, but sql is declarative
-language which means it shouldn't include "How to do", such as how to fetch data, how to send data. So we use
-environment variables to support `subscribe` and `publish` actions for command line tool; use program methods to
-support `subscribe` and `publish`actions for client library.
