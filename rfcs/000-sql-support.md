@@ -100,5 +100,4 @@ some example here.
 
 ```
 set print_format=csv;
-set select_action=subscribe;
 ```
