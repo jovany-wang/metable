@@ -1,4 +1,4 @@
-# Proposal: SQL Support
+# Proposal: Metable SQL-like Specification
 
 ## Status
 
