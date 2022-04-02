@@ -51,10 +51,8 @@ grpc::Status MetableServiceImpl::CreateTable(::grpc::ServerContext *context,
         reply->set_status(rpc::CreateTableStatus::CREATE_TABLE_FAIL);
         return grpc::Status::OK;
     }
-    auto db = all_dbs.find(db_name)->second;
-    all_dbs.erase(db_name);
-    db.insert(std::make_pair(table_name, fields));
-    auto result = all_dbs.insert(std::make_pair(db_name, db));
+    auto &db = all_dbs.find(db_name)->second;
+    auto result = db.insert(std::make_pair(table_name, fields));
     if (result.second) {  // Insert success.
         reply->set_msg("Create table success...");
         reply->set_status(rpc::CreateTableStatus::CREATE_TABLE_SUCCESS);
