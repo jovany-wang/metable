@@ -39,13 +39,17 @@ public:
     // and second represents the description of the result. Warning !!! The field
     // name in the vector should not be repeated. You should carefully check it
     // before calling this method.
+    std::pair<bool, std::string> CreateDataBase(const std::string &db_name);
+
     std::pair<bool, std::string> CreateTable(
-        const std::string &name,
+        const std::string &db_name, const std::string &table_name,
         const std::vector<std::pair<std::string, rpc::FieldType>> &fields);
 
-    std::pair<bool, std::string> TableExist(const std::string &name);
+    std::pair<bool, std::string> TableExist(const std::string &db_name,
+                                            const std::string &table_name);
 
-    std::pair<bool, std::string> DropTable(const std::string &name);
+    std::pair<bool, std::string> DropTable(const std::string &db_name,
+                                           const std::string &table_name);
 
 private:
     std::unique_ptr<metable::rpc::Metable::Stub> stub_;

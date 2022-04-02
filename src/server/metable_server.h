@@ -24,6 +24,10 @@ public:
                                       const rpc::CheckVersionRequest *request,
                                       rpc::CheckVersionReply *reply) override;
 
+    virtual grpc::Status CreateDataBase(::grpc::ServerContext *context,
+                                        const rpc::CreateDataBaseRequest *request,
+                                        rpc::CreateDataBaseReply *reply) override;
+
     virtual grpc::Status CreateTable(::grpc::ServerContext *context,
                                      const rpc::CreateTableRequest *request,
                                      rpc::CreateTableReply *reply) override;
@@ -37,8 +41,10 @@ public:
                                    rpc::DropTableReply *reply) override;
 
 private:
-    // All tables in memeory！
-    std::unordered_map<std::string, std::vector<rpc::Field>> all_tables;
+    // All DataBase name in memeory！
+    std::unordered_map<std::string,
+                       std::unordered_map<std::string, std::vector<rpc::Field>>>
+        all_dbs;
 };
 
 /// The server of Metable.

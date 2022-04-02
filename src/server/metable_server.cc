@@ -14,22 +14,53 @@ grpc::Status MetableServiceImpl::CheckVersion(::grpc::ServerContext *context,
     return grpc::Status::OK;
 }
 
+grpc::Status MetableServiceImpl::CreateDataBase(::grpc::ServerContext *context,
+                                                const rpc::CreateDataBaseRequest *request,
+                                                rpc::CreateDataBaseReply *reply) {
+    const std::string &db_name = request->db_name();
+
+    if (all_dbs.find(db_name) != all_dbs.end()) {
+        reply->set_msg("DataBase  exists...");
+        reply->set_status(rpc::CreateDataBaseStatus::CREATE_DATA_BASE_FAIL);
+        return grpc::Status::OK;
+    }
+    std::unordered_map<std::string, std::vector<rpc::Field>> db;
+    auto result = all_dbs.insert(std::make_pair(db_name, db));
+    if (result.second) {  // Insert success.
+        reply->set_msg("Create DataBase success...");
+        reply->set_status(rpc::CreateDataBaseStatus::CREATE_DATA_BASE_SUCCESS);
+    } else {  // Insert fail.
+        reply->set_msg("DataBase already exists...");
+        reply->set_status(rpc::CreateDataBaseStatus::CREATE_DATA_BASE_FAIL);
+    }
+    return grpc::Status::OK;
+}
+
 grpc::Status MetableServiceImpl::CreateTable(::grpc::ServerContext *context,
                                              const rpc::CreateTableRequest *request,
                                              rpc::CreateTableReply *reply) {
+    const std::string &db_name = request->db_name();
     const std::string &table_name = request->table_name();
     std::vector<rpc::Field> fields;
     long size = request->fields_size();
     for (long i = 0; i < size; i++) {
         fields.emplace_back(request->fields(i));
     }
-    auto result = all_tables.insert(std::make_pair(table_name, fields));
+    if (all_dbs.find(db_name) == all_dbs.end()) {
+        reply->set_msg("DataBase not exists...");
+        reply->set_status(rpc::CreateTableStatus::CREATE_TABLE_FAIL);
+        return grpc::Status::OK;
+    }
+    auto db = all_dbs.find(db_name)->second;
+    all_dbs.erase(db_name);
+    db.insert(std::make_pair(table_name, fields));
+    auto result = all_dbs.insert(std::make_pair(db_name, db));
     if (result.second) {  // Insert success.
         reply->set_msg("Create table success...");
-        reply->set_status(rpc::CreateTableStatus::SUCCESS);
+        reply->set_status(rpc::CreateTableStatus::CREATE_TABLE_SUCCESS);
     } else {  // Insert fail.
         reply->set_msg("Table already exists...");
-        reply->set_status(rpc::CreateTableStatus::FAIL);
+        reply->set_status(rpc::CreateTableStatus::CREATE_TABLE_FAIL);
     }
     return grpc::Status::OK;
 }
@@ -37,15 +68,23 @@ grpc::Status MetableServiceImpl::CreateTable(::grpc::ServerContext *context,
 grpc::Status MetableServiceImpl::TableExist(::grpc::ServerContext *context,
                                             const rpc::TableExistRequest *request,
                                             rpc::TableExistReply *reply) {
+    const std::string &db_name = request->db_name();
     const std::string &table_name = request->table_name();
-    if (all_tables.find(table_name) == all_tables.end()) {
-        // table_name is not exist.
-        reply->set_msg("This table is not exists.");
+
+    if (all_dbs.find(db_name) == all_dbs.end()) {
+        reply->set_msg("DataBase not exists...");
         reply->set_status(rpc::TableExistStatus::TABLE_NOT_EXIST);
-    } else {
+        return grpc::Status::OK;
+    }
+    auto db = all_dbs.find(db_name)->second;
+    if (db.find(table_name) != db.end()) {
         // table_name exist
         reply->set_msg("This table is exists.");
         reply->set_status(rpc::TableExistStatus::TABLE_EXIST);
+    } else {
+        // table_name is not exist.
+        reply->set_msg("This table is not exists.");
+        reply->set_status(rpc::TableExistStatus::TABLE_NOT_EXIST);
     }
     return grpc::Status::OK;
 }
@@ -53,15 +92,23 @@ grpc::Status MetableServiceImpl::TableExist(::grpc::ServerContext *context,
 grpc::Status MetableServiceImpl::DropTable(::grpc::ServerContext *context,
                                            const rpc::DropTableRequest *request,
                                            rpc::DropTableReply *reply) {
+    const std::string &db_name = request->db_name();
     const std::string &table_name = request->table_name();
-    auto it = all_tables.find(table_name);
-    if (it == all_tables.end()) {
+    if (all_dbs.find(db_name) == all_dbs.end()) {
+        reply->set_msg("DataBase not exists...");
+        reply->set_status(rpc::DropTableStatus::DROP_TABLE_FAIL);
+        return grpc::Status::OK;
+    }
+    auto db = all_dbs.find(db_name)->second;
+
+    auto it = db.find(table_name);
+    if (it == db.end()) {
         // table_name is not exist, should not need to be deleted.
         reply->set_msg("This table is not exists, do nothing.");
         reply->set_status(rpc::DropTableStatus::DROP_TABLE_FAIL);
     } else {
         // table_name exist, should be deleted.
-        all_tables.erase(it);
+        db.erase(it);
         reply->set_msg("This table delete success");
         reply->set_status(rpc::DropTableStatus::DROP_TABLE_SUCCESS);
     }

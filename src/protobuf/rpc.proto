@@ -6,6 +6,8 @@ package metable.rpc;
 service Metable {
   rpc CheckVersion(CheckVersionRequest) returns (CheckVersionReply) {}
 
+  rpc CreateDataBase(CreateDataBaseRequest) returns (CreateDataBaseReply) {}
+
   rpc CreateTable(CreateTableRequest) returns (CreateTableReply) {}
 
   rpc TableExist(TableExistRequest) returns (TableExistReply) {}
@@ -24,11 +26,27 @@ message CheckVersionRequest { string version_str = 1; }
 
 message CheckVersionReply { CheckVersionStatus status = 1; }
 
+/// Define the information required for CreateDataBase !!!
+
+enum CreateDataBaseStatus {
+    CREATE_DATA_BASE_SUCCESS = 0;
+    CREATE_DATA_BASE_FAIL = 1;
+}
+
+message CreateDataBaseRequest {
+    string db_name = 1;
+}
+
+message CreateDataBaseReply {
+    CreateDataBaseStatus status = 1;
+    string msg = 2;
+}
+
 /// Define the information required for CreateTable !!!
 
 enum CreateTableStatus {
-    SUCCESS = 0;
-    FAIL = 1;
+    CREATE_TABLE_SUCCESS = 0;
+    CREATE_TABLE_FAIL = 1;
 }
 
 enum FieldType {
@@ -53,8 +71,9 @@ message Field {
 }
 
 message CreateTableRequest {
-    string table_name = 1;
-    repeated Field fields = 2;
+    string db_name = 1;
+    string table_name = 2;
+    repeated Field fields = 3;
 }
 
 message CreateTableReply {
@@ -70,7 +89,8 @@ enum TableExistStatus {
 }
 
 message TableExistRequest {
-    string table_name = 1;
+    string db_name = 1;
+    string table_name = 2;
 }
 
 message TableExistReply {
@@ -86,7 +106,8 @@ enum DropTableStatus {
 }
 
 message DropTableRequest {
-    string table_name = 1;
+    string db_name = 1;
+    string table_name = 2;
 }
 
 message DropTableReply {
