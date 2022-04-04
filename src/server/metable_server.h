@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
+#include <shared_mutex>
 
 #include "common/logging.h"
 #include "grpcpp/grpcpp.h"
@@ -42,6 +43,7 @@ public:
 
 private:
     // All DataBase name in memeory！
+    mutable std::shared_timed_mutex mutex_;
     std::unordered_map<std::string,
                        std::unordered_map<std::string, std::vector<rpc::Field>>>
         all_dbs;

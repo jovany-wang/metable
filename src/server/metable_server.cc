@@ -17,6 +17,7 @@ grpc::Status MetableServiceImpl::CheckVersion(::grpc::ServerContext *context,
 grpc::Status MetableServiceImpl::CreateDataBase(::grpc::ServerContext *context,
                                                 const rpc::CreateDataBaseRequest *request,
                                                 rpc::CreateDataBaseReply *reply) {
+    std::unique_lock<std::shared_timed_mutex> lock(mutex_);
     const std::string &db_name = request->db_name();
 
     if (all_dbs.find(db_name) != all_dbs.end()) {
@@ -39,6 +40,7 @@ grpc::Status MetableServiceImpl::CreateDataBase(::grpc::ServerContext *context,
 grpc::Status MetableServiceImpl::CreateTable(::grpc::ServerContext *context,
                                              const rpc::CreateTableRequest *request,
                                              rpc::CreateTableReply *reply) {
+    std::unique_lock<std::shared_timed_mutex> lock(mutex_);
     const std::string &db_name = request->db_name();
     const std::string &table_name = request->table_name();
     std::vector<rpc::Field> fields;
@@ -66,6 +68,7 @@ grpc::Status MetableServiceImpl::CreateTable(::grpc::ServerContext *context,
 grpc::Status MetableServiceImpl::TableExist(::grpc::ServerContext *context,
                                             const rpc::TableExistRequest *request,
                                             rpc::TableExistReply *reply) {
+    std::shared_lock<std::shared_timed_mutex> lock(mutex_);
     const std::string &db_name = request->db_name();
     const std::string &table_name = request->table_name();
 
@@ -90,6 +93,7 @@ grpc::Status MetableServiceImpl::TableExist(::grpc::ServerContext *context,
 grpc::Status MetableServiceImpl::DropTable(::grpc::ServerContext *context,
                                            const rpc::DropTableRequest *request,
                                            rpc::DropTableReply *reply) {
+    std::unique_lock<std::shared_timed_mutex> lock(mutex_);
     const std::string &db_name = request->db_name();
     const std::string &table_name = request->table_name();
     if (all_dbs.find(db_name) == all_dbs.end()) {
