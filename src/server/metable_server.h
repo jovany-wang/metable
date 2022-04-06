@@ -2,8 +2,8 @@
 
 #include <fstream>
 #include <iostream>
-#include <memory>
 #include <map>
+#include <memory>
 #include <shared_mutex>
 
 #include "common/logging.h"
@@ -45,7 +45,7 @@ public:
 private:
     // All DataBase name in memeory！
     mutable std::shared_timed_mutex mutex_;
-    std::map<std::string,std::map<std::string, std::vector<rpc::Field> > > all_dbs;
+    std::map<std::string, std::map<std::string, std::vector<rpc::Field> > > all_dbs;
 };
 
 /// The server of Metable.
