@@ -25,7 +25,7 @@ grpc::Status MetableServiceImpl::CreateDataBase(::grpc::ServerContext *context,
         reply->set_status(rpc::CreateDataBaseStatus::CREATE_DATA_BASE_FAIL);
         return grpc::Status::OK;
     }
-    std::unordered_map<std::string, std::vector<rpc::Field>> db;
+    std::map<std::string, std::vector<rpc::Field>> db;
     auto result = all_dbs.insert(std::make_pair(db_name, db));
     if (result.second) {  // Insert success.
         reply->set_msg("Create DataBase success...");
