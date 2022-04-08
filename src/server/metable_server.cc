@@ -20,13 +20,13 @@ grpc::Status MetableServiceImpl::CreateDataBase(::grpc::ServerContext *context,
     std::unique_lock<std::shared_timed_mutex> lock(mutex_);
     const std::string &db_name = request->db_name();
 
-    if (all_dbs.find(db_name) != all_dbs.end()) {
+    if (all_dbs_.find(db_name) != all_dbs_.end()) {
         reply->set_msg("DataBase  exists...");
         reply->set_status(rpc::CreateDataBaseStatus::CREATE_DATA_BASE_FAIL);
         return grpc::Status::OK;
     }
     std::map<std::string, std::vector<rpc::Field>> db;
-    auto result = all_dbs.insert(std::make_pair(db_name, db));
+    auto result = all_dbs_.insert(std::make_pair(db_name, db));
     if (result.second) {  // Insert success.
         reply->set_msg("Create DataBase success...");
         reply->set_status(rpc::CreateDataBaseStatus::CREATE_DATA_BASE_SUCCESS);
@@ -48,12 +48,12 @@ grpc::Status MetableServiceImpl::CreateTable(::grpc::ServerContext *context,
     for (long i = 0; i < size; i++) {
         fields.emplace_back(request->fields(i));
     }
-    if (all_dbs.find(db_name) == all_dbs.end()) {
+    if (all_dbs_.find(db_name) == all_dbs_.end()) {
         reply->set_msg("DataBase not exists...");
         reply->set_status(rpc::CreateTableStatus::CREATE_TABLE_FAIL);
         return grpc::Status::OK;
     }
-    auto &db = all_dbs.find(db_name)->second;
+    auto &db = all_dbs_.find(db_name)->second;
     auto result = db.insert(std::make_pair(table_name, fields));
     if (result.second) {  // Insert success.
         reply->set_msg("Create table success...");
@@ -72,12 +72,12 @@ grpc::Status MetableServiceImpl::TableExist(::grpc::ServerContext *context,
     const std::string &db_name = request->db_name();
     const std::string &table_name = request->table_name();
 
-    if (all_dbs.find(db_name) == all_dbs.end()) {
+    if (all_dbs_.find(db_name) == all_dbs_.end()) {
         reply->set_msg("DataBase not exists...");
         reply->set_status(rpc::TableExistStatus::TABLE_NOT_EXIST);
         return grpc::Status::OK;
     }
-    auto db = all_dbs.find(db_name)->second;
+    auto db = all_dbs_.find(db_name)->second;
     if (db.find(table_name) != db.end()) {
         // table_name exist
         reply->set_msg("This table is exists.");
@@ -96,12 +96,12 @@ grpc::Status MetableServiceImpl::DropTable(::grpc::ServerContext *context,
     std::unique_lock<std::shared_timed_mutex> lock(mutex_);
     const std::string &db_name = request->db_name();
     const std::string &table_name = request->table_name();
-    if (all_dbs.find(db_name) == all_dbs.end()) {
+    if (all_dbs_.find(db_name) == all_dbs_.end()) {
         reply->set_msg("DataBase not exists...");
         reply->set_status(rpc::DropTableStatus::DROP_TABLE_FAIL);
         return grpc::Status::OK;
     }
-    auto db = all_dbs.find(db_name)->second;
+    auto db = all_dbs_.find(db_name)->second;
 
     auto it = db.find(table_name);
     if (it == db.end()) {

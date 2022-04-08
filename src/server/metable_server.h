@@ -45,7 +45,7 @@ public:
 private:
     // All DataBase name in memeory！
     mutable std::shared_timed_mutex mutex_;
-    std::map<std::string, std::map<std::string, std::vector<rpc::Field> > > all_dbs;
+    std::map<std::string, std::map<std::string, std::vector<rpc::Field> > > all_dbs_;
 };
 
 /// The server of Metable.
