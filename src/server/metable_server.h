@@ -2,7 +2,9 @@
 
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <memory>
+#include <shared_mutex>
 
 #include "common/logging.h"
 #include "grpcpp/grpcpp.h"
@@ -24,6 +26,10 @@ public:
                                       const rpc::CheckVersionRequest *request,
                                       rpc::CheckVersionReply *reply) override;
 
+    virtual grpc::Status CreateDataBase(::grpc::ServerContext *context,
+                                        const rpc::CreateDataBaseRequest *request,
+                                        rpc::CreateDataBaseReply *reply) override;
+
     virtual grpc::Status CreateTable(::grpc::ServerContext *context,
                                      const rpc::CreateTableRequest *request,
                                      rpc::CreateTableReply *reply) override;
@@ -37,8 +43,9 @@ public:
                                    rpc::DropTableReply *reply) override;
 
 private:
-    // All tables in memeory！
-    std::unordered_map<std::string, std::vector<rpc::Field>> all_tables;
+    // All DataBase name in memeory！
+    mutable std::shared_timed_mutex mutex_;
+    std::map<std::string, std::map<std::string, std::vector<rpc::Field> > > all_dbs_;
 };
 
 /// The server of Metable.
