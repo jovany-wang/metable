@@ -78,3 +78,11 @@ def metable_deps_setup():
         strip_prefix = "asio-1.20.0",
         build_file = "@com_github_jovany_wang_metable//bazel/thirdparty:asio.BUILD",
     )
+
+    maybe(
+        http_archive,
+        name = "rules_antlr",
+        sha256 = "26e6a83c665cf6c1093b628b3a749071322f0f70305d12ede30909695ed85591",
+        url = "https://github.com/marcohu/rules_antlr/archive/0.5.0.tar.gz",
+        strip_prefix = "rules_antlr-0.5.0",
+    )

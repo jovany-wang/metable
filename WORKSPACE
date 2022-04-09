@@ -11,3 +11,7 @@ metable_deps_build_all()
 # load() statement cannot be in a function so we put it here.
 load("@com_github_grpc_grpc//bazel:grpc_extra_deps.bzl", "grpc_extra_deps")
 grpc_extra_deps()
+
+load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
+load("@rules_antlr//antlr:lang.bzl", "CPP")
+rules_antlr_dependencies("4.8", CPP)

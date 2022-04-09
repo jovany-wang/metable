@@ -74,6 +74,16 @@ cc_library(
     ],
 )
 
+cc_library(
+    name = "metable_sql",
+    srcs = ["//src/sql:sql_grammer"],
+    deps = [
+        "//src/sql:sql_grammer",
+        "@antlr4_runtimes//:cpp"
+    ],
+    linkstatic = 1,
+)
+
 cc_binary(
     name = "metable_server",
     srcs = glob([
