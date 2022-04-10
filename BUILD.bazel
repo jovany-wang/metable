@@ -76,9 +76,9 @@ cc_library(
 
 cc_library(
     name = "metable_sql",
-    srcs = ["//src/sql:sql_grammer"],
+    srcs = ["//src/sql:sql_grammar"],
     deps = [
-        "//src/sql:sql_grammer",
+        "//src/sql:sql_grammar",
         "@antlr4_runtimes//:cpp"
     ],
     linkstatic = 1,
