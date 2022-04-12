@@ -41,16 +41,14 @@ expression
 booleanExpression
     : NOT booleanExpression
     | valueExpression predicate?
-    | left=booleanExpression operator=AND right=booleanExpression
-    | left=booleanExpression operator=OR right=booleanExpression
+    | left=booleanExpression (AND | OR) right=booleanExpression
     | LEFT_PAREN booleanExpression RIGHT_PAREN
     ; 
 
 valueExpression
-    : 
-    | operator=(PLUS | MINUS | TILDE) valueExpression
-    | left=valueExpression operator=arithmeticOperator right=valueExpression
-    | left=valueExpression operator=comparisonOperator right=valueExpression
+    : (PLUS | MINUS | TILDE) valueExpression
+    | left=valueExpression arithmeticOperator right=valueExpression
+    | left=valueExpression comparisonOperator right=valueExpression
     | constant
     | ASTERISK
     ;
@@ -90,8 +88,4 @@ comparisonOperator
 
 arithmeticOperator
     : PLUS | MINUS | ASTERISK | SLASH | PERCENT 
-    ;
-
-predicateOperator
-    : OR | AND | IN | NOT
     ;
