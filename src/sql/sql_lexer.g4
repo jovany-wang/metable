@@ -14,6 +14,7 @@ RIGHT_BRACKET: ']';
 ADD: 'ADD';
 ALTER: 'ALTER';
 AND: 'AND';
+AS: 'AS';
 BETWEEN: 'BETWEEN';
 COLUMN: 'COLUMN';
 COMMENT: 'COMMENT';
@@ -21,6 +22,7 @@ CREATE: 'CREATE';
 DATABASE: 'DATABASE';
 DATABASES: 'DATABASES';
 DELETE: 'DELETE';
+DISTINCT: 'DISTINCT';
 DROP: 'DROP';
 FALSE: 'FALSE';
 FROM: 'FROM';
@@ -68,11 +70,11 @@ DATETIME: 'DATETIME';
 // == end of column types list
 // =============================
 
-LT: '>';
-LTE: '>=';
+LT: '<';
+LTE: '<=';
 EQ: '=';
-ET: '<';
-EQT: '<=';
+GT: '>';
+GTE: '>=';
 NEQ: '!=';
 
 PLUS: '+';
@@ -80,6 +82,15 @@ MINUS: '-';
 ASTERISK: '*';
 SLASH: '/';
 PERCENT: '%';
+TILDE: '~';
+
+IDENTIFIER
+    : (LETTER | DIGIT | '_')+
+    ;
+
+BACKQUOTED_IDENTIFIER
+    : '`' ( ~'`' | '``' )* '`'
+    ;
 
 STRING_LITERAL
     : '\'' ( ~('\''|'\\') | ('\\' .) )* '\''
