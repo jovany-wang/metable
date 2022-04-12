@@ -1,5 +1,5 @@
-grammar sql_grammar;
-options { tokenVocab = sql_lexer; }
+grammar SqlGrammar;
+options { tokenVocab = SqlLexer; }
 
 statement
     : query

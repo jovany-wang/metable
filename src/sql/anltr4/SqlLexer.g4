@@ -1,4 +1,4 @@
-lexer grammar sql_lexer;
+lexer grammar SqlLexer;
 
 SEMICOLON: ';';
 LEFT_PAREN: '(';
