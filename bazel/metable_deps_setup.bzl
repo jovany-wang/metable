@@ -1,7 +1,7 @@
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository", "new_git_repository")
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file", "http_jar")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
-  
+
 
 def metable_deps_setup():
     maybe(
@@ -85,4 +85,56 @@ def metable_deps_setup():
         sha256 = "26e6a83c665cf6c1093b628b3a749071322f0f70305d12ede30909695ed85591",
         url = "https://github.com/marcohu/rules_antlr/archive/0.5.0.tar.gz",
         strip_prefix = "rules_antlr-0.5.0",
+    )
+
+    maybe(
+        http_archive,
+        name = "antlr4_runtimes",
+        sha256 = "efe4057d75ab48145d4683100fec7f77d7f87fa258707330cadd1f8e6f7eecae",
+        build_file_content = """
+package(default_visibility = ["//visibility:public"])
+cc_library(
+    name = "cpp",
+    srcs = glob(["runtime/Cpp/runtime/src/**/*.cpp"]),
+    hdrs = glob(["runtime/Cpp/runtime/src/**/*.h"]),
+    includes = ["runtime/Cpp/runtime/src"],
+)
+ """,
+        strip_prefix = "antlr4-4.9.3",
+        urls = ["https://github.com/antlr/antlr4/archive/refs/tags/4.9.3.tar.gz"],
+    )
+
+    maybe(
+        http_jar,
+        name = "antlr4_tool",
+        sha256 = "386fec520b8962fe37f448af383920ea33d7a532314b36d7ba9ccec1ba95eb37",
+        url = "https://repo1.maven.org/maven2/org/antlr/antlr4/4.9.3/antlr4-4.9.3.jar",
+    )
+
+    maybe(
+        http_jar,
+        name = "javax_json",
+        sha256 = "17fdeb7e22375a7fb40bb0551306f6dcf2b5743078668adcdf6c642c9a9ec955",
+        url = "https://repo1.maven.org/maven2/org/glassfish/javax.json/1.1.4/javax.json-1.1.4.jar",
+    )
+
+    maybe(
+        http_jar,
+        name = "stringtemplate4",
+        sha256 = "64503dd855b48edfe0e597494acfb4a481f26a8e254608ad7506d991674f5bce",
+        url = "https://repo1.maven.org/maven2/org/antlr/ST4/4.3.3/ST4-4.3.3.jar",
+    )
+
+    maybe(
+        http_jar,
+        name = "antlr4_runtime",
+        sha256 = "131a6594969bc4f321d652ea2a33bc0e378ca312685ef87791b2c60b29d01ea5",
+        url = "https://repo1.maven.org/maven2/org/antlr/antlr4-runtime/4.9.3/antlr4-runtime-4.9.3.jar",
+    )
+
+    maybe(
+        http_jar,
+        name = "antlr3_runtime",
+        sha256 = "68bf9f5a33dfcb34033495c587e6236bef4e37aa6612919f5b1e843b90669fb9",
+        url = "https://repo1.maven.org/maven2/org/antlr/antlr-runtime/3.5.3/antlr-runtime-3.5.3.jar",
     )

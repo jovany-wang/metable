@@ -57,12 +57,12 @@ predicate
     : NOT? kind=BETWEEN lower=valueExpression AND upper=valueExpression
     | NOT? kind=IN LEFT_PAREN expression (COMMA expression)* RIGHT_PAREN
     | NOT? kind=LIKE pattern=valueExpression
-    | IS NOT? kind=NULL
+    | IS NOT? kind=NULL_
     | IS NOT? kind=(TRUE | FALSE)
     ;
 
 constant
-    : NULL
+    : NULL_
     | STRING_LITERAL
     | INTEGER_LITERAL
     | DECIMAL_LITERAL
