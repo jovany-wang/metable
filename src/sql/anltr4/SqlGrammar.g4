@@ -3,14 +3,19 @@ options { tokenVocab = SqlLexer; }
 
 statement
     : query
-    ; 
+    ;
 
 query
-    : selectClause fromClause whereClause?
+    : selectClause fromClause whereClause? #queryStatement
+    | subClause fromClause whereClause? #subStatement
     ;
 
 selectClause
     : SELECT nameExpressionSeq
+    ;
+
+subClause
+    : SUB namedExpression
     ;
 
 fromClause
@@ -18,7 +23,7 @@ fromClause
     ;
 
 whereClause
-    : WHERE
+    : WHERE booleanExpression
     ; 
 
 nameExpressionSeq
@@ -39,18 +44,18 @@ expression
 
 
 booleanExpression
-    : NOT booleanExpression
-    | valueExpression predicate?
-    | left=booleanExpression (AND | OR) right=booleanExpression
-    | LEFT_PAREN booleanExpression RIGHT_PAREN
+    : NOT booleanExpression # logicalNot
+    | valueExpression predicate? #logicalPredicate
+    | left=booleanExpression (AND | OR) right=booleanExpression #logicalBinary
     ; 
 
 valueExpression
-    : (PLUS | MINUS | TILDE) valueExpression
-    | left=valueExpression arithmeticOperator right=valueExpression
-    | left=valueExpression comparisonOperator right=valueExpression
-    | constant
-    | ASTERISK
+    : (PLUS | MINUS | TILDE) valueExpression #arithmeticUnary
+    | left=valueExpression arithmeticOperator right=valueExpression #arthmeticBinary
+    | left=valueExpression comparisonOperator right=valueExpression #comparisonBinary
+    | LEFT_PAREN expression RIGHT_PAREN #parenthesizedExpression
+    | constant #constantValue
+    | ASTERISK #star
     ;
 
 predicate

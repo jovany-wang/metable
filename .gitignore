@@ -23,5 +23,8 @@ bazel-metable
 bazel-out
 bazel-testlogs
 
+# anltr4 generated file
+**/.anltr4
+
 // logs
 log

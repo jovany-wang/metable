@@ -1,7 +1,18 @@
 #pragma once
 
-#include "src/sql/anltr4/sql_grammar.inc/SqlGrammarVisitor.h"
+#include <string>
+
+#include "SqlGrammarVisitor.h"
+
+class Stmt {};
+
+class QueryStmt {};
 
 class SqlParser {
+public:
+    Stmt parse(std::string statement);
+};
 
+class MetableSqlVisitor : public SqlGrammarVisitor {
+    
 };
