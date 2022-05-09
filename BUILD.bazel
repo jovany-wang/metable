@@ -2,11 +2,10 @@ load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_proto_library", "c
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 
-
 cc_library(
     name = "common_lib",
-    hdrs = glob(["src/common/*.h"]),
     srcs = glob(["src/common/*.cc"]),
+    hdrs = glob(["src/common/*.h"]),
     strip_include_prefix = "//src",
     visibility = ["//visibility:public"],
     deps = ["@com_github_spdlog//:spdlog"],
@@ -14,8 +13,8 @@ cc_library(
 
 cc_library(
     name = "skiplist_map_lib",
-    hdrs = glob(["src/skiplist_map/*.h"]),
     srcs = glob(["src/skiplist_map/*.cc"]),
+    hdrs = glob(["src/skiplist_map/*.h"]),
     strip_include_prefix = "//src",
     visibility = ["//visibility:public"],
     deps = ["@com_github_skiplist//:skiplist"],
@@ -27,43 +26,42 @@ cc_grpc_library(
     srcs = ["//src/protobuf:rpc_proto"],
     grpc_only = True,
     deps = [
-        "//src/protobuf:rpc_cc_proto"
+        "//src/protobuf:rpc_cc_proto",
     ],
 )
 
 cc_library(
     name = "metable_server_lib",
+    srcs = glob(["src/server/metable_server.cc"]),
     hdrs = glob(["src/server/*.h"]),
-    srcs = glob(["src/server/metable_server.cc",]),
     strip_include_prefix = "//src",
     visibility = ["//visibility:public"],
     deps = [
         ":common_lib",
         ":rpc_cc_grpc",
+        "@asio",
         "@com_github_grpc_grpc//:grpc++",
-        "@asio//:asio",
     ],
 )
 
 cc_library(
     name = "raftlite_common_lib",
+    srcs = glob(["src/raftlite/common/*.cc"]),
     hdrs = glob(["src/raftlite/common/*.h"]),
-    srcs = glob(["src/raftlite/common/*.cc",]),
     strip_include_prefix = "//src",
     visibility = ["//visibility:public"],
     deps = [
         ":common_lib",
         ":rpc_cc_grpc",
+        "@asio",
         "@com_github_grpc_grpc//:grpc++",
-        "@asio//:asio",
     ],
 )
 
-
 cc_library(
     name = "metable_client_lib",
+    srcs = glob(["src/client/metable_client.cc"]),
     hdrs = glob(["src/client/*.h"]),
-    srcs = glob(["src/client/metable_client.cc",]),
     strip_include_prefix = "//src",
     visibility = ["//visibility:public"],
     deps = [
@@ -75,8 +73,8 @@ cc_library(
 
 cc_library(
     name = "metable_sql_lib",
-    hdrs = glob(["src/sql/*.h"]),
     srcs = glob(["src/sql/*.cc"]),
+    hdrs = glob(["src/sql/*.h"]),
     strip_include_prefix = "//src",
     visibility = ["//visibility:public"],
     deps = [
@@ -90,8 +88,8 @@ cc_binary(
         "src/server/server_main.cc",
     ]),
     deps = [
-        ":metable_server_lib",
         ":common_lib",
+        ":metable_server_lib",
         ":rpc_cc_grpc",
         "@com_github_grpc_grpc//:grpc++",
     ],
@@ -101,8 +99,8 @@ cc_binary(
     name = "metable_client",
     srcs = glob(["src/client/client_main.cc"]),
     deps = [
-        ":metable_client_lib",
         ":common_lib",
+        ":metable_client_lib",
         ":rpc_cc_grpc",
         "@com_github_grpc_grpc//:grpc++",
     ],
@@ -110,8 +108,8 @@ cc_binary(
 
 cc_test(
     name = "logging_test",
-    srcs = ["tests/logging_test.cc"],
     size = "small",
+    srcs = ["tests/logging_test.cc"],
     tags = ["team:metable-core"],
     deps = [
         ":common_lib",
@@ -121,8 +119,8 @@ cc_test(
 
 cc_test(
     name = "gflags_test",
-    srcs = ["tests/gflags_test.cc"],
     size = "small",
+    srcs = ["tests/gflags_test.cc"],
     tags = ["team:metable-core"],
     deps = [
         "@com_github_gflags_gflags//:gflags",
@@ -132,8 +130,8 @@ cc_test(
 
 cc_test(
     name = "skiplist_map_test",
-    srcs = ["tests/skiplist_map_test.cc"],
     size = "small",
+    srcs = ["tests/skiplist_map_test.cc"],
     tags = ["team:metable-core"],
     deps = [
         ":skiplist_map_lib",
@@ -143,12 +141,23 @@ cc_test(
 
 cc_test(
     name = "rpc_test",
-    srcs = ["tests/rpc_test.cc"],
     size = "small",
+    srcs = ["tests/rpc_test.cc"],
     tags = ["team:metable-core"],
     deps = [
-        ":metable_server_lib",
         ":metable_client_lib",
+        ":metable_server_lib",
+        "@com_google_googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "sql_test",
+    size = "small",
+    srcs = ["tests/sql_test.cc"],
+    tags = ["team:metable-core"],
+    deps = [
+        ":metable_sql_lib",
         "@com_google_googletest//:gtest_main",
     ],
 )
