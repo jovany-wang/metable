@@ -36,7 +36,7 @@ public:
 class SqlSelect : public SqlNode {
 private:
     std::vector<SqlExpression> selectList;
-    SqlFrom from;
+    SqlFrom from_;
 
 public:
     SqlSelect(std::vector<SqlExpression> selectList, SqlFrom from);
@@ -44,7 +44,7 @@ public:
 
 class SqlParser {
 public:
-    SqlSelect parser(std::string sql);
+    SqlSelect parse(std::string sql);
 };
 
 class MetableSqlVisitor : public SqlGrammarBaseVisitor {

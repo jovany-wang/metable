@@ -73,7 +73,7 @@ cc_library(
 
 cc_library(
     name = "metable_sql_lib",
-    srcs = glob(["src/sql/*.cc"]),
+    srcs = glob(["src/sql/*.cc", "src/sql/*.cpp"]),
     hdrs = glob(["src/sql/*.h"]),
     strip_include_prefix = "//src",
     visibility = ["//visibility:public"],

@@ -3,7 +3,7 @@
 
 TEST(SqlTest, TestQuery) {
     SqlParser parser;
-    SqlSelect select = parser.parser("select * from test");
+    SqlSelect select = parser.parse("select * from test");
 }
 
 int main(int argc, char **argv) {

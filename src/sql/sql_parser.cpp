@@ -14,11 +14,10 @@ SqlSelect SqlParser::parse(std::string statement) {
     SqlGrammarParser parser(&tokens);
     tree::ParseTree *tree = parser.statement();
     MetableSqlVisitor visitor;
-    return visitor.visit(tree).as<>(SqlSelect);
+    return visitor.visit(tree).as<SqlSelect>();
 }
 
-SqlSelect::SqlSelect(std::vector<SqlExpression> selectList, SqlFrom from) {
-    this->from = from;
+SqlSelect::SqlSelect(std::vector<SqlExpression> selectList, SqlFrom from) : from_(std::move(from)) {
     this->selectList = selectList;
 }
 
