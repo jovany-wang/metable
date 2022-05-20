@@ -56,6 +56,7 @@ private:
 public:
     virtual antlrcpp::Any visitQueryStatement(
         SqlGrammarParser::QueryStatementContext *ctx) override {
+        std::cout << "============== 21" << std::endl;
         return withSqlSelect(ctx->selectClause(), ctx->fromClause(), ctx->whereClause());
     }
 
@@ -67,6 +68,7 @@ public:
         for (auto namedExpress : namedExpressCtxVec) {
             expressVector.push_back(visitNamedExpression(namedExpress).as<SqlExpression>());
         }
+        std::cout << "=====================10" << std::endl;
         return expressVector;
     }
 
@@ -87,5 +89,8 @@ public:
 
     virtual antlrcpp::Any visitStar(SqlGrammarParser::StarContext *ctx) override {
         return SqlExpression(ASTERISK);
+    }
+    virtual antlrcpp::Any visitFromClause(SqlGrammarParser::FromClauseContext *ctx) override {
+        return SqlFrom("test");
     }
 };
