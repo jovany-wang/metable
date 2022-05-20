@@ -4,6 +4,8 @@
 #include "SqlLexer.h"
 #include "antlr4-runtime.h"
 #include "string"
+#include "common/logging.h"
+#include <iostream>
 
 using namespace antlr4;
 
@@ -29,6 +31,7 @@ SqlSelect MetableSqlVisitor::withSqlSelect(
     SqlGrammarParser::WhereClauseContext *whereClause) {
     SqlSelect select = {visitSelectClause(selectContext).as<std::vector<SqlExpression>>(),
                         visitFromClause(fromClause).as<SqlFrom>()};
+    return select;
 }
 
 SqlExpression::SqlExpression(ConstantValue constant) { this->constant = constant; }

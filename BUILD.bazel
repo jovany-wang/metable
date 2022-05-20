@@ -80,6 +80,7 @@ cc_library(
     linkstatic = 1,
     deps = [
         "//src/sql/anltr4:sql_grammar_parser",
+        ":common_lib",
     ],
 )
 
