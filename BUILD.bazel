@@ -77,6 +77,7 @@ cc_library(
     hdrs = glob(["src/sql/*.h"]),
     strip_include_prefix = "//src",
     visibility = ["//visibility:public"],
+    linkstatic = 1,
     deps = [
         "//src/sql/anltr4:sql_grammar_parser",
     ],
