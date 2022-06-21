@@ -5,11 +5,128 @@
 
 #include "SqlGrammarBaseVisitor.h"
 
-enum ConstantValue {
-    ASTERISK,
+namespace metable {
+
+class Expr {};
+class Literal : Expr {};
+
+// define structs for all Literal.
+class NullLiteral : Literal {};
+
+class StringLiteral : Literal {
+    std::string value;
 };
 
-class SqlNode {};
+class BooleanLiteral : Literal {
+    bool value;
+};
+
+class IntegerLiteral : Literal {
+    long value;
+};
+
+class DecimalLiteral : Literal {
+    double value;
+};
+
+// define basic expressions
+class ValueExpr : Expr {
+    Literal value;
+};
+
+class AsteriskExpr : Expr {};
+
+class NotExpr : Expr {
+    Expr expr;
+};
+
+class AndExpr : Expr {
+    Expr left;
+    Expr right;
+};
+
+// TODO logicalPredicate expressions
+// TODO arithmeticUnary expressions
+
+class ParenExpr : Expr {
+    Expr expr;
+};
+
+// define arithmetic operators
+// TODO may be extends TwoParamExpr ?
+class PlusExpr : Expr {
+    Expr left;
+    Expr right;
+};
+
+class MinusExpr : Expr {
+    Expr left;
+    Expr right;
+};
+
+class MultiplyExpr : Expr {
+    Expr left;
+    Expr right;
+};
+
+class DivideExpr : Expr {
+    Expr left;
+    Expr right;
+};
+
+class ModExpr : Expr {
+    Expr left;
+    Expr right;
+};
+
+// define comparison operators
+class LtExpr : Expr {
+    Expr left;
+    Expr right;
+};
+
+class LteExpr : Expr {
+    Expr left;
+    Expr right;
+};
+
+class EqExpr : Expr {
+    Expr left;
+    Expr right;
+};
+
+class GtExpr : Expr {
+    Expr left;
+    Expr right;
+};
+
+class GteExpr : Expr {
+    Expr left;
+    Expr right;
+};
+
+class NeqExpr : Expr {
+    Expr left;
+    Expr right;
+};
+
+class AliasExpr : Expr {
+    Expr expr;
+    std::string alias;
+};
+
+class SqlFrom {};
+
+class SqlWhere {};
+
+class SqlSelect {
+    std::vector<Expr> selectVec;
+    SqlFrom from;
+    Expr where;
+}
+
+class SqlNode {
+};
 
 // only support * expression
 class SqlExpression : public SqlNode {
@@ -49,9 +166,10 @@ public:
 
 class MetableSqlVisitor : public SqlGrammarBaseVisitor {
 private:
-    SqlSelect withSqlSelect(SqlGrammarParser::SelectClauseContext *selectContext,
-                            SqlGrammarParser::FromClauseContext *fromContext,
-                            SqlGrammarParser::WhereClauseContext *whereContext);
+    std::shared_ptr<SqlSelect> withSqlSelect(
+        SqlGrammarParser::SelectClauseContext *selectContext,
+        SqlGrammarParser::FromClauseContext *fromContext,
+        SqlGrammarParser::WhereClauseContext *whereContext);
 
 public:
     virtual antlrcpp::Any visitQueryStatement(
@@ -66,7 +184,8 @@ public:
             ctx->nameExpressionSeq()->namedExpression();
         std::vector<SqlExpression> expressVector = {};
         for (auto namedExpress : namedExpressCtxVec) {
-            expressVector.push_back(visitNamedExpression(namedExpress).as<SqlExpression>());
+            expressVector.push_back(
+                visitNamedExpression(namedExpress).as<SqlExpression>());
         }
         std::cout << "=====================10" << std::endl;
         return expressVector;
@@ -90,7 +209,10 @@ public:
     virtual antlrcpp::Any visitStar(SqlGrammarParser::StarContext *ctx) override {
         return SqlExpression(ASTERISK);
     }
-    virtual antlrcpp::Any visitFromClause(SqlGrammarParser::FromClauseContext *ctx) override {
+    virtual antlrcpp::Any visitFromClause(
+        SqlGrammarParser::FromClauseContext *ctx) override {
         return SqlFrom("test");
     }
 };
+
+}  // namespace metable

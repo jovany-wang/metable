@@ -1,14 +1,16 @@
 #include "src/sql/sql_parser.h"
 
-#include "SqlGrammarParser.h"
-#include "SqlLexer.h"
-#include "antlr4-runtime.h"
-#include "string"
-#include "common/logging.h"
 #include <iostream>
 #include <vector>
 
+#include "SqlGrammarParser.h"
+#include "SqlLexer.h"
+#include "antlr4-runtime.h"
+#include "common/logging.h"
+#include "string"
+
 using namespace antlr4;
+using namespace std;
 
 SqlSelect SqlParser::parse(std::string statement) {
     ANTLRInputStream input(statement);
@@ -17,33 +19,27 @@ SqlSelect SqlParser::parse(std::string statement) {
     SqlGrammarParser parser(&tokens);
     tree::ParseTree *tree = parser.statement();
     MetableSqlVisitor visitor;
-    std::cout << "================== 31" << std::endl;
     auto x = visitor.visit(tree);
-    std::cout << "================== 41" << std::endl;
-    SqlSelect y = x.as<SqlSelect>();
-    std::cout << "================== 51" << std::endl;
-    return y;
+    auto y = x.as<std::shared_ptr<SqlSelect>>();
+    return *y;
 }
 
-SqlSelect::SqlSelect(std::vector<SqlExpression> selectList, SqlFrom from) : from_(std::move(from)) {
+SqlSelect::SqlSelect(std::vector<SqlExpression> selectList, SqlFrom from)
+    : from_(std::move(from)) {
     this->selectList = selectList;
 }
 
 SqlFrom::SqlFrom(std::string tableIdentify) { this->tableIdentify = tableIdentify; }
 
-SqlSelect MetableSqlVisitor::withSqlSelect(
+std::shared_ptr<SqlSelect> MetableSqlVisitor::withSqlSelect(
     SqlGrammarParser::SelectClauseContext *selectContext,
     SqlGrammarParser::FromClauseContext *fromClause,
     SqlGrammarParser::WhereClauseContext *whereClause) {
-    std::cout << "================== 11" << std::endl;
-    std::vector<SqlExpression> express_list = visitSelectClause(selectContext).as<std::vector<SqlExpression>>();
-    std::cout << "================== 12" << std::endl;
+    vector<SqlExpression> express_list =
+        visitSelectClause(selectContext).as<std::vector<SqlExpression>>();
     SqlFrom from = visitFromClause(fromClause).as<SqlFrom>();
-    std::cout << "================== 13" << std::endl;
     SqlSelect select = {express_list, from};
-
-    std::cout << "================== 14" << std::endl;
-    return select;
+    return make_shared<SqlSelect>(select);
 }
 
 SqlExpression::SqlExpression(ConstantValue constant) { this->constant = constant; }
