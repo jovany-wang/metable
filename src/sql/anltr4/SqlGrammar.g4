@@ -19,7 +19,7 @@ subClause
     ;
 
 fromClause
-    : FROM tableIdentifier
+    : FROM identifier
     ;
 
 whereClause
@@ -31,7 +31,7 @@ nameExpressionSeq
     ;
 
 namedExpression
-    : expression (AS alias=aliaIdentifier)?
+    : expression (AS alias=identifier)?
     ;
 
 expressionSeq
@@ -56,6 +56,7 @@ valueExpression
     | LEFT_PAREN expression RIGHT_PAREN #parenthesizedExpression
     | constant #constantValue
     | ASTERISK #star
+    | identifier #columnIdentifier
     ;
 
 predicate
@@ -67,24 +68,20 @@ predicate
     ;
 
 constant
-    : NULL_
-    | STRING_LITERAL
-    | INTEGER_LITERAL
-    | DECIMAL_LITERAL
-    | booleanValue
+    : NULL_ #nullLiteral
+    | STRING_LITERAL #stringLiteral
+    | INTEGER_LITERAL #integerLiteral
+    | DECIMAL_LITERAL #decimalLiteral
+    | booleanValue #booleanLiteral
     ;
 
 booleanValue
     : TRUE | FALSE
     ;
 
-aliaIdentifier
+identifier
     : IDENTIFIER
     | BACKQUOTED_IDENTIFIER
-    ;
-
-tableIdentifier
-    : IDENTIFIER
     ;
 
 comparisonOperator
