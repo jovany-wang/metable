@@ -7,166 +7,187 @@
 
 namespace metable {
 
+using namespace std;
+
 class Expr {};
+
+// literal expression base class.
 class Literal : Expr {};
+
+// unary expression base class.
+class UnaryExpr : protected Expr {
+protected:
+    Expr expr;
+
+public:
+    UnaryExpr(Expr Expr);
+};
+
+// binary expression base class.
+class BinaryExpr : protected Expr {
+protected:
+    Expr left;
+    Expr right;
+
+public:
+    BinaryExpr(Expr left, Expr right);
+};
 
 // define structs for all Literal.
 class NullLiteral : Literal {};
 
 class StringLiteral : Literal {
-    std::string value;
+    string value;
+
+public:
+    StringLiteral(string value);
 };
 
 class BooleanLiteral : Literal {
     bool value;
+
+public:
+    BooleanLiteral(bool value);
 };
 
 class IntegerLiteral : Literal {
     long value;
+
+public:
+    IntegerLiteral(long value);
 };
 
 class DecimalLiteral : Literal {
     double value;
+
+public:
+    DecimalLiteral(double value);
 };
 
 // define basic expressions
-class ValueExpr : Expr {
-    Literal value;
+class ValueExpr : protected UnaryExpr {
+public:
+    ValueExpr(Expr expr) : UnaryExpr(expr){};
 };
 
 class AsteriskExpr : Expr {};
 
-class NotExpr : Expr {
-    Expr expr;
+// define unary exprs
+
+class NotExpr : protected UnaryExpr {
+public:
+    NotExpr(Expr expr) : UnaryExpr(expr){};
 };
 
-class AndExpr : Expr {
-    Expr left;
-    Expr right;
+class ParenExpr : protected UnaryExpr {
+public:
+    ParenExpr(Expr expr) : UnaryExpr(expr){};
 };
+
+class AndExpr : protected BinaryExpr {
+public:
+    AndExpr(Expr left, Expr right) : BinaryExpr(left, right){};
+};
+
+class OrExpr : protected BinaryExpr {
+public:
+    OrExpr(Expr left, Expr right) : BinaryExpr(left, right){};
+}
 
 // TODO logicalPredicate expressions
 // TODO arithmeticUnary expressions
 
-class ParenExpr : Expr {
-    Expr expr;
-};
-
 // define arithmetic operators
-// TODO may be extends TwoParamExpr ?
-class PlusExpr : Expr {
-    Expr left;
-    Expr right;
+class PlusExpr : protected BinaryExpr {
+public:
+    PlusExpr(Expr left, Expr right) : BinaryExpr(left, right){};
 };
 
-class MinusExpr : Expr {
-    Expr left;
-    Expr right;
+class MinusExpr : protected BinaryExpr {
+public:
+    MinusExpr(Expr left, Expr right) : BinaryExpr(left, right){};
 };
 
-class MultiplyExpr : Expr {
-    Expr left;
-    Expr right;
+class MultiplyExpr : protected BinaryExpr {
+public:
+    MultiplyExpr(Expr left, Expr right) : BinaryExpr(left, right){};
 };
 
-class DivideExpr : Expr {
-    Expr left;
-    Expr right;
+class DivideExpr : protected BinaryExpr {
+public:
+    DivideExpr(Expr left, Expr right) : BinaryExpr(left, right){};
 };
 
-class ModExpr : Expr {
-    Expr left;
-    Expr right;
+class ModExpr : protected BinaryExpr {
+public:
+    ModExpr(Expr left, Expr right) : BinaryExpr(left, right){};
 };
 
 // define comparison operators
-class LtExpr : Expr {
-    Expr left;
-    Expr right;
+class LtExpr : protected BinaryExpr {
+public:
+    LtExpr(Expr left, Expr right) : BinaryExpr(left, right){};
 };
 
-class LteExpr : Expr {
-    Expr left;
-    Expr right;
+class LteExpr : protected BinaryExpr {
+public:
+    LteExpr(Expr left, Expr right) : BinaryExpr(left, right){};
 };
 
-class EqExpr : Expr {
-    Expr left;
-    Expr right;
+class EqExpr : protected BinaryExpr {
+public:
+    EqExpr(Expr left, Expr right) : BinaryExpr(left, right){};
 };
 
-class GtExpr : Expr {
-    Expr left;
-    Expr right;
+class GtExpr : protected BinaryExpr {
+public:
+    GtExpr(Expr left, Expr right) : BinaryExpr(left, right){};
 };
 
-class GteExpr : Expr {
-    Expr left;
-    Expr right;
+class GteExpr : protected BinaryExpr {
+public:
+    GteExpr(Expr left, Expr right) : BinaryExpr(left, right){};
 };
 
-class NeqExpr : Expr {
-    Expr left;
-    Expr right;
+class NeqExpr : protected BinaryExpr {
+public:
+    NeqExpr(Expr left, Expr right) : BinaryExpr(left, right){};
 };
 
 class AliasExpr : Expr {
     Expr expr;
-    std::string alias;
+    string alias;
+
+public:
+    AliasExpr(Expr expr, string alias);
 };
 
-class SqlFrom {};
+class SqlFrom {
+    string tableName;
+    string alias;
 
-class SqlWhere {};
+public:
+    SqlFrom(string tableName, string alias);
+};
 
-class SqlSelect {
-    std::vector<Expr> selectVec;
+class SqlStatement {};
+class SqlSelect : SqlStatement {
+    vector<Expr> selectVec;
     SqlFrom from;
     Expr where;
-}
-
-class SqlNode {
-};
-
-// only support * expression
-class SqlExpression : public SqlNode {
-private:
-    ConstantValue constant;
 
 public:
-    SqlExpression(ConstantValue constant);
-};
-
-class SqlNamedExpression : public SqlExpression {
-private:
-    std::string alias;
-};
-class SqlFrom : public SqlNode {
-private:
-    std::string tableIdentify;
-
-public:
-    SqlFrom(std::string tableIdentify);
-};
-
-// select * from table;
-class SqlSelect : public SqlNode {
-private:
-    std::vector<SqlExpression> selectList;
-    SqlFrom from_;
-
-public:
-    SqlSelect(std::vector<SqlExpression> selectList, SqlFrom from);
+    SqlSelect(vector<Expr> selectVec, SqlFrom from, Expr where);
 };
 
 class SqlParser {
 public:
-    SqlSelect parse(std::string sql);
+    SqlStatement parse(string sql);
 };
 
 class MetableSqlVisitor : public SqlGrammarBaseVisitor {
 private:
-    std::shared_ptr<SqlSelect> withSqlSelect(
+    shared_ptr<SqlSelect> withSqlSelect(
         SqlGrammarParser::SelectClauseContext *selectContext,
         SqlGrammarParser::FromClauseContext *fromContext,
         SqlGrammarParser::WhereClauseContext *whereContext);
@@ -174,27 +195,30 @@ private:
 public:
     virtual antlrcpp::Any visitQueryStatement(
         SqlGrammarParser::QueryStatementContext *ctx) override {
-        std::cout << "============== 21" << std::endl;
         return withSqlSelect(ctx->selectClause(), ctx->fromClause(), ctx->whereClause());
     }
 
     virtual antlrcpp::Any visitSelectClause(
         SqlGrammarParser::SelectClauseContext *ctx) override {
-        std::vector<SqlGrammarParser::NamedExpressionContext *> namedExpressCtxVec =
+        vector<SqlGrammarParser::NamedExpressionContext *> namedExpressCtxVec =
             ctx->nameExpressionSeq()->namedExpression();
-        std::vector<SqlExpression> expressVector = {};
+        vector<Expr> exprVec = {};
         for (auto namedExpress : namedExpressCtxVec) {
-            expressVector.push_back(
-                visitNamedExpression(namedExpress).as<SqlExpression>());
+            exprVec.push_back(visitNamedExpression(namedExpress).as<Expr>());
         }
-        std::cout << "=====================10" << std::endl;
-        return expressVector;
+        return exprVec;
     }
 
     virtual antlrcpp::Any visitNamedExpression(
         SqlGrammarParser::NamedExpressionContext *ctx) override {
-        // todo skip alias now.
-        return visit(ctx->expression());
+        // TODO 指定别名
+        return AliasExpr(visit(ctx->expression()), "");
+    }
+
+    // visit all boolean expression.
+    virtual antlrcpp::Any visitLogicalNot(
+        SqlGrammarParser::LogicalNotContext *ctx) override {
+        return NotExpr(visit(ctx->booleanExpression()))
     }
 
     virtual antlrcpp::Any visitLogicalPredicate(
@@ -205,6 +229,20 @@ public:
         // todo
         return antlrcpp::Any();
     }
+
+    virtual antlrcpp::Any visitLogicalBinary(
+        SqlGrammarParser::LogicalBinaryContext *ctx) override {
+        Expr leftExpr = visit(ctx->booleanExpression(0).as<Expr>();
+        Expr rightExpr = visit(ctx->booleanExpression(1).as<Expr>();
+        if (ctx->AND() == nullptr) {
+            return OrExpr(left, right);
+        } else {
+            return AndExpr(left, right);
+        }
+    }
+
+    // todo visit arithmeticUnary
+    
 
     virtual antlrcpp::Any visitStar(SqlGrammarParser::StarContext *ctx) override {
         return SqlExpression(ASTERISK);

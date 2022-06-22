@@ -9,8 +9,28 @@
 #include "common/logging.h"
 #include "string"
 
+namespace metable {
 using namespace antlr4;
 using namespace std;
+
+UnaryExpr::UnaryExpr(Expr expr) : expr(expr){};
+
+BinaryExpr::BinaryExpr(Expr left, Expr right) : left(left), right(right){};
+
+StringLiteral::StringLiteral(string value) : value(value){};
+
+BooleanLiteral::BooleanLiteral(bool value) : value(value){};
+
+IntegerLiteral::IntegerLiteral(long value) : value(value){};
+
+DecimalLiteral::DecimalLiteral(double value) : value(value){};
+
+AliasExpr::AliasExpr(Expr expr, string alias) : expr(expr), alias(alias){};
+
+SqlFrom::SqlFrom(string tableName, string alias) : tableName(tableName), alias(alias){};
+
+SqlSelect::SqlSelect(vector<Expr> selectVec, SqlFrom from, Expr where)
+    : selectVec(selectVec), from(from), where(where){};
 
 SqlSelect SqlParser::parse(std::string statement) {
     ANTLRInputStream input(statement);
@@ -24,22 +44,14 @@ SqlSelect SqlParser::parse(std::string statement) {
     return *y;
 }
 
-SqlSelect::SqlSelect(std::vector<SqlExpression> selectList, SqlFrom from)
-    : from_(std::move(from)) {
-    this->selectList = selectList;
-}
-
-SqlFrom::SqlFrom(std::string tableIdentify) { this->tableIdentify = tableIdentify; }
-
 std::shared_ptr<SqlSelect> MetableSqlVisitor::withSqlSelect(
     SqlGrammarParser::SelectClauseContext *selectContext,
     SqlGrammarParser::FromClauseContext *fromClause,
     SqlGrammarParser::WhereClauseContext *whereClause) {
-    vector<SqlExpression> express_list =
-        visitSelectClause(selectContext).as<std::vector<SqlExpression>>();
+    vector<Expr> express_list = visitSelectClause(selectContext).as<vector<Expr>>();
     SqlFrom from = visitFromClause(fromClause).as<SqlFrom>();
-    SqlSelect select = {express_list, from};
+    SqlSelect select = {express_list, from, Expr{}};
     return make_shared<SqlSelect>(select);
 }
 
-SqlExpression::SqlExpression(ConstantValue constant) { this->constant = constant; }
+}  // namespace metable
