@@ -1,6 +1,5 @@
 #include "gtest/gtest.h"
 #include "sql/sql_parser.h"
-#include <typeinfo>
 using namespace metable;
 TEST(SqlTest, TestQuery) {
     SqlParser parser;
